@@ -1,0 +1,13 @@
+{
+  "IsVisible": true,
+  "Icon": "",
+  "UsageDescription": "",
+  "PromptTemplate": "",
+
+  "Inputs": [
+    {
+      "InputPlaceholder": "",
+      "InputLabel": ""
+    }
+  ]
+}
