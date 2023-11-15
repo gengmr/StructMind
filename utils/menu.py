@@ -43,7 +43,7 @@ def get_menu_config(menu_dir, is_top_level=True):
     如果目录只包含文件，则每个文件对应一个菜单项。
     """
     menu_items = []
-    for entry in os.listdir(menu_dir):
+    for entry in sorted(os.listdir(menu_dir)):
         entry_path = os.path.join(menu_dir, entry)
         if os.path.isdir(entry_path):
             # 如果是目录，则递归构建子菜单
