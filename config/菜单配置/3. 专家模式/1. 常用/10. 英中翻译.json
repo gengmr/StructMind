@@ -1,0 +1,21 @@
+{
+  "IsVisible": true,
+  "Icon": "translate",
+  "UsageDescription": "提供英中互译服务。",
+  "ChinesePromptTemplate": "作为一名专业的翻译专家，你的任务是根据客户提供的文本进行准确、流畅的英中互译工作。请根据以下步骤操作：\n请仔细审阅以下信息\n```\n翻译内容（~~~内）：\n~~~\n{***}\n~~~\n翻译要求和指导（###内）：\n###\n{***}\n###\n目标语言（%%%内）：\n%%%\n{***}\n%%%\n根据以上信息，开始你的翻译工作。请确保最终翻译文本准确传达原文内容和语境",
+  "EnglishPromptTemplate": "As a professional translation expert, your task is to perform accurate and fluent English-Chinese translation based on the text provided by the client. Please follow these steps: \nCarefully review the following information\n```\nTranslation content (within ~~~): \n~~~\n{***}\n~~~\nTranslation requirements and instructions (within ###): \n###\n{***}\n###\nTarget language (within %%%): \n%%%\n{***}\n%%%\nBased on the above information, begin your translation work. Ensure that the final translated text accurately conveys the original content and context. Please respond in Chinese.",
+  "Inputs": [
+    {
+      "InputPlaceholder": "请输入您需要翻译的内容。",
+      "InputLabel": "翻译内容"
+    },
+    {
+      "InputPlaceholder": "描述您的翻译要求和指导，如特定术语处理、语言风格、格式要求等。",
+      "InputLabel": "具体要求"
+    },
+    {
+      "InputPlaceholder": "请输入您的目标语言（中文、英文）。",
+      "InputLabel": "目标语言"
+    }
+  ]
+}

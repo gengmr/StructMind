@@ -1,4 +1,6 @@
 import streamlit as st
+import json
+import base64
 
 
 def apple_input_style():
@@ -86,6 +88,91 @@ def markdown_css(text, font_size=16, font=None, color="black", align="left", bol
     # Display the styled text using Streamlit's markdown
     st.markdown(markdown_text, unsafe_allow_html=True)
 
+
+def markdown_style():
+    """
+    返回Markdown样式的字符串。
+    """
+    return """
+    <style>
+    .small-font {
+        font-size: 15px;
+        color: darkgray;
+    }
+    .level-1 {
+        margin-left: 0px;
+        color: #1B2430; /* 深空灰 */
+    }
+    .level-2 {
+        margin-left: 20px;
+        color: #C0C0C0; /* 银色 */
+    }
+    .level-3 {
+        margin-left: 40px;
+        color: #1B2430; /* 深空灰 */
+    }
+    .level-4 {
+        margin-left: 60px;
+        color: #C0C0C0; /* 银色 */
+    }
+    </style>
+    """
+
+
+def create_download_button(label, data, file_name, mime):
+    """
+    创建一个下载按钮，允许用户下载JSON格式的数据。
+
+    参数:
+    label (str): 按钮上显示的文本。
+    data (dict): 要下载的数据，以字典格式提供。
+    file_name (str): 下载文件的名称。
+    mime (str): 文件的MIME类型，例如 'application/json'。
+    """
+
+    # 将数据转换为JSON字符串
+    json_data = json.dumps(data, ensure_ascii=False, indent=4)
+
+    # 编码数据为Base64
+    b64_data = base64.b64encode(json_data.encode()).decode()
+
+    # 生成下载链接
+    download_link = f"""
+        <a download="{file_name}" href="data:{mime};base64,{b64_data}" class="apple-style-button">
+            {label}
+        </a>
+    """
+
+    # 设置按钮样式
+    apple_style = """
+        <style>
+        .apple-style-button {
+            background-color: #FFFFFF;  /* 白色背景 */
+            color: #007AFF;  /* 蓝色字体，符合苹果设计 */
+            border-radius: 15px;
+            border: none;
+            font-family: 'Helvetica Neue', sans-serif;  /* 使用苹果系统字体 */
+            font-size: 16px;
+            padding: 5px 15px;  /* 按钮的高度和宽度 */
+            margin: 10px 0;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+            text-align: center;
+            text-decoration: none;  /* 移除下划线 */
+            display: inline-block;
+            cursor: pointer;
+        }
+        .apple-style-button:hover {
+            background-color: #F0F0F0;  /* 悬停时略微变暗 */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            text-decoration: none;  /* 悬停时也移除下划线 */
+        }
+        </style>
+    """
+
+    # 将样式和下载链接添加到Streamlit应用中
+    st.markdown(apple_style, unsafe_allow_html=True)
+    st.markdown(download_link, unsafe_allow_html=True)
 
 
 

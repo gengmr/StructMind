@@ -1,0 +1,13 @@
+{
+  "IsVisible": true,
+  "Icon": "",
+  "UsageDescription": "",
+  "ChinesePromptTemplate": "",
+  "EnglishPromptTemplate": "",
+  "Inputs": [
+    {
+      "InputPlaceholder": "",
+      "InputLabel": ""
+    }
+  ]
+}

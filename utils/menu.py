@@ -73,6 +73,6 @@ def get_menu_config(menu_dir, is_top_level=True):
             domain = remove_numerical_prefix(domain)
             result = construct_menu_item_from_json(entry_path, domain)
             if result:
-                menu_items.append(construct_menu_item_from_json(entry_path, domain))
+                menu_items.append(result)
 
     return menu_items
