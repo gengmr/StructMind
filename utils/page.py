@@ -14,14 +14,25 @@ def create_input_section(placeholder, placeholder_tag, idx, field):
         sac.tags([sac.Tag(label=placeholder_tag, color='black', bordered=False)])
     with col2:
         key = f"{field}-{idx}"
+
+        # 定义一个回调函数，当输入文本框文字改变时更新 session_state
+        def on_text_area_change():
+            st.session_state[key] = st.session_state[key + "-input"]
+
+        # 使用 key + "-input" 来临时存储文本区域的内容
         input_value = st.text_area(
             label="input",  # 提供非空的label值, 避免警告
             height=0,
             label_visibility="collapsed",
             placeholder=placeholder,
-            value=st.session_state.get(key, "")
+            value=st.session_state.get(key, ""),  # 从 session_state 获取初始值
+            key=key + "-input",  # 使用不同的 key
+            on_change=on_text_area_change  # 当文本框内容改变时调用函数
         )
-        st.session_state[key] = input_value
+
+        # 如果 session_state 中没有存储过当前文本框的值，则存储
+        if key not in st.session_state:
+            st.session_state[key] = input_value
         return input_value
 
 
@@ -129,29 +140,43 @@ def create_config_page():
     with col1:
         sac.tags([sac.Tag(label='中文模版', color='black', bordered=False)], key='tag-1')
     with col2:
-        key = f"{field}-ChinesePromptTemplate"
+        # 定义一个回调函数，当输入文本框文字改变时更新 session_state
+        def on_text_area_change():
+            st.session_state[chinese_key] = st.session_state[chinese_key + "-input"]
+
+        chinese_key = f"{field}-ChinesePromptTemplate"
         chinese_template = st.text_area(
             label="input",  # 提供非空的label值, 避免警告
             height=200,
             label_visibility="collapsed",
             placeholder=prompt_placeholder.replace('{language}', '中文'),
-            value=st.session_state.get(key, "")
+            key=chinese_key + "-input",  # 使用不同的 key
+            value=st.session_state.get(chinese_key, ""),
+            on_change = on_text_area_change  # 当文本框内容改变时调用函数
         )
-        st.session_state[key] = chinese_template
+        # 如果 session_state 中没有存储过当前文本框的值，则存储
+        if chinese_key not in st.session_state:
+            st.session_state[chinese_key] = chinese_template
 
     col1, col2 = st.columns([1, 10])
     with col1:
         sac.tags([sac.Tag(label='英文模版', color='black', bordered=False)], key='tag-2')
     with col2:
-        key = f"{field}-EnglishPromptTemplate"
+        def on_text_area_change():
+            st.session_state[english_key] = st.session_state[english_key + "-input"]
+
+        english_key = f"{field}-EnglishPromptTemplate"
         english_template = st.text_area(
             label="input",  # 提供非空的label值, 避免警告
             height=200,
             label_visibility="collapsed",
             placeholder=prompt_placeholder.replace('{language}', '英文'),
-            value=st.session_state.get(key, "")
+            key=english_key + "-input",  # 使用不同的 key
+            value=st.session_state.get(english_key, ""),
+            on_change = on_text_area_change  # 当文本框内容改变时调用函数
         )
-        st.session_state[key] = english_template
+        if english_key not in st.session_state:
+            st.session_state[english_key] = english_template
 
     col1, col2 = st.columns([1, 10])
     with col1:
