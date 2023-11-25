@@ -15,11 +15,11 @@
     },
     {
       "InputPlaceholder": "请输入子任务解决方案。",
-      "InputLabel": "子任务解决方案"
+      "InputLabel": "解决方案"
     },
     {
       "InputPlaceholder": "请输入子任务解决方案概述。",
-      "InputLabel": "子任务解决方案概述"
+      "InputLabel": "方案概述"
     }
   ]
 }

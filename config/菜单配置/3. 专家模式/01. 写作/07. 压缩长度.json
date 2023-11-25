@@ -1,0 +1,17 @@
+{
+    "IsVisible": true,
+    "Icon": "arrows-collapse",
+    "UsageDescription": "将给定文本重写为用户要求的风格。保持原文语言和方言不变。",
+    "ChinesePromptTemplate": "在不改变语言的情况下，您的任务是将三引号间的文本重写为用户要求的语气。请求语气为：{***}。确保输出与文本的语言种类或方言相同，换句话说，不要改变语言，并且只给我输出，不要包括其他内容。不要用引号包裹回应。\"\"\" {***} \"\"\"",
+    "EnglishPromptTemplate": "Without changing the language, your task is to rewrite the text delimited by triple quotes to have a request tone. The request tone is: {***}. Ensure output in the same language variety or dialect of the text - in other words don't change the language, and only give me the output and nothing else. Do not wrap responses in quotes. \"\"\" {***} \"\"\"",
+    "Inputs": [
+        {
+            "InputPlaceholder": "请输入您希望的请求语气（例如：礼貌、直接、温和）。",
+            "InputLabel": "请求语气"
+        },
+        {
+            "InputPlaceholder": "请输入您需要转换语气的文本。",
+            "InputLabel": "原始文本"
+        }
+    ]
+}

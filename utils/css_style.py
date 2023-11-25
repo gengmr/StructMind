@@ -47,51 +47,49 @@ def apple_input_style():
 
 def markdown_css(text, font_size=16, font=None, color="black", align="left", bold=False):
     """
-    Display text with custom font size, optional font family, color, alignment, and boldness using Streamlit's markdown.
+    使用Streamlit的markdown显示具有自定义字体大小、可选字体族、颜色、对齐方式和加粗的文本。
 
-    Parameters:
-    - text (str): The text to be displayed.
-    - font_size (int): The size of the font in pixels. Default is 16.
-    - font (str, optional): The font family of the text. If None, the browser's default font is used. Default is None.
-    - color (str): The color of the text. It can be a named color or hex code. Default is "black".
-    - align (str): The alignment of the text. It can be "left", "center", or "right". Default is "left".
-    - bold (bool): If True, the text will be bold. Default is False.
+    参数:
+    - text (str): 要显示的文本。
+    - font_size (int): 字体大小（像素）。默认为16。
+    - font (str, 可选): 文本的字体族。如果为None，则使用浏览器的默认字体。默认为None。
+    - color (str): 文本的颜色。可以是命名颜色或十六进制代码。默认为"black"。
+    - align (str): 文本的对齐方式。可以是"left"、"center"或"right"。默认为"left"。
+    - bold (bool): 如果为True，则文本将加粗。默认为False。
 
-    Returns:
-    None
+    返回:
+    无
     """
 
-    # Create a unique key for the CSS style to avoid conflicts with other markdown styles
+    # 创建唯一键以避免与其他markdown样式冲突
     unique_key = hash((text, font_size, font, color, align, bold))
 
-    # Start the style definition
-    style = f"<style>\n.markdown-css-{unique_key} {{\n"
+    # 构建样式定义
+    style_components = [
+        f"font-family: {font};" if font else "",
+        f"font-size: {font_size}px;",
+        f"color: {color};",
+        f"text-align: {align};",
+        "font-weight: bold;" if bold else ""
+    ]
+    style = f"<style>\n.markdown-css-{unique_key} {{\n" + "\n".join(filter(None, style_components)) + "\n}}</style>\n"
 
-    # Add font-family if font is specified
-    if font is not None:
-        style += f"    font-family: {font};\n"
-
-    # Add font-size, color, alignment, and boldness
-    style += f"    font-size: {font_size}px;\n"
-    style += f"    color: {color};\n"
-    style += f"    text-align: {align};\n"
-
-    # Set font-weight to bold if bold is True
-    if bold:
-        style += "    font-weight: bold;\n"
-
-    style += "}</style>\n"
-
-    # Combine the style and the text
+    # 结合样式和文本
     markdown_text = style + f'<div class="markdown-css-{unique_key}">{text}</div>'
 
-    # Display the styled text using Streamlit's markdown
+    # 使用Streamlit的markdown显示样式化文本
     st.markdown(markdown_text, unsafe_allow_html=True)
 
 
 def markdown_style():
     """
-    返回Markdown样式的字符串。
+    构造并返回一系列Markdown样式定义的字符串。
+
+    此函数定义了几种特定的Markdown样式，可以被应用于Streamlit应用中的Markdown文本。
+    定义的样式包括不同级别的文本缩进和颜色变化。
+
+    返回:
+    - str: 包含Markdown样式定义的字符串。
     """
     return """
     <style>

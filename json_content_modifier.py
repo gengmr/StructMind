@@ -47,25 +47,10 @@ def print_json_contents(file_path):
     pyperclip.copy(template)
 
 
-def add_English(file_path):
-    with open(file_path, 'r', encoding='utf8') as file:
-        data = json.load(file)
-    template = """
-    修改json且仅返回EnglishPromptTemplate字段，不需返回其他字段.要求根据ChinesePromptTemplate（prompt for GPT-4）字段补充EnglishPromptTemplate字段[在EnglishPromptTemplate中额外要求模型用中文回复（Please respond in Chinese）].要求转为英文时专业、准确、忠实原文(除了添加中文回复要求)。json如下（^^^中）：
-    ^^^
-    {json}
-    ^^^
-    """
-    template = template.replace('{json}', json.dumps(data, ensure_ascii=False, indent=2))
-    print(template)
-    pyperclip.copy(template)
-
-
 if __name__ == '__main__':
     # 指定你的JSON文件路径
     json_file_path = 'config/菜单配置/6. 探索模式/1. 编程【仅测试】/01. 思路分析【仅测试】.json'
     # # 调用函数
     # print_json_contents(json_file_path)
 
-    add_English(json_file_path)
 

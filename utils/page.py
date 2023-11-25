@@ -18,7 +18,6 @@ def create_input_section(placeholder, placeholder_tag, idx, field):
         # 定义一个回调函数，当输入文本框文字改变时更新 session_state
         def on_text_area_change():
             st.session_state[key] = st.session_state[key + "-input"]
-
         # 使用 key + "-input" 来临时存储文本区域的内容
         input_value = st.text_area(
             label="input",  # 提供非空的label值, 避免警告

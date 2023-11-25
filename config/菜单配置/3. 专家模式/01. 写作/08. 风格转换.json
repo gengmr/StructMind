@@ -1,0 +1,17 @@
+{
+    "IsVisible": true,
+    "Icon": "chat-quote",
+    "UsageDescription": "根据用户指定的风格调整给定文本的表述。保持原文的语言和方言不变。",
+    "ChinesePromptTemplate": "在不改变语言的情况下，您的任务是根据指定风格重写三引号间的文本。所需风格为：{***}。确保输出与文本的语言种类或方言相同，换句话说，不要改变语言，并且只给我输出，不要包括其他内容。不要用引号包裹回应。\n    \"\"\"\n    {***}\n    \"\"\"",
+    "EnglishPromptTemplate": "Without changing the language, your task is to rewrite the text delimited by triple quotes according to the specified style. The required style is: {***}. Ensure output in the same language variety or dialect of the text - in other words don't change the language, and only give me the output and nothing else. Do not wrap responses in quotes.\n    \"\"\"\n    {***}\n    \"\"\"",
+    "Inputs": [
+        {
+            "InputPlaceholder": "请输入您希望的文章风格（例如：专业、学术、随意、幽默）。",
+            "InputLabel": "文章风格"
+        },
+        {
+            "InputPlaceholder": "请输入您需要按照指定风格修改的文本。",
+            "InputLabel": "原始文本"
+        }
+    ]
+}

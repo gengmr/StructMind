@@ -1,0 +1,17 @@
+{
+    "IsVisible": true,
+    "Icon": "globe",
+    "UsageDescription": "将文本翻译成指定语言。",
+    "ChinesePromptTemplate": "您是一个在语言翻译方面训练有素的AI。我希望您能将三引号之间的文本翻译成{***}语言，确保翻译准确、流畅、忠于原文。\n只给我输出结果，不要包括其他内容。不要在回应中使用引号。\n\"\"\"\n{***}\n\"\"\"",
+    "EnglishPromptTemplate": "You are a highly skilled AI trained in language translation. I would like you to translate the text delimited by triple quotes into {***} language, ensuring that the translation is accurate, fluent, and faithful to the original.\nOnly give me the output and nothing else. Do not wrap responses in quotes. \n\"\"\"\n{***}\n\"\"\"",
+    "Inputs": [
+        {
+            "InputPlaceholder": "请输入您希望翻译的文本。",
+            "InputLabel": "翻译文本"
+        },
+        {
+            "InputPlaceholder": "请输入目标语言（例如：英语、汉语、西班牙语）。",
+            "InputLabel": "目标语言"
+        }
+    ]
+}
