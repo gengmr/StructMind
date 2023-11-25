@@ -6,7 +6,7 @@
     "EnglishPromptTemplate": "Correct any spelling, syntax, or grammar mistakes in the text delimited by triple quotes (\"\"\") without making any improvements or changes to the original meaning or style. In other words, only correct spelling, syntax, or grammar mistakes, do not make improvements. When listing errors, use the following clear and understandable format:\n\n[Error Type] at [Location in the Text]: [Description of the Error]\nCorrection: [Corrected Text]\nRepeat this format for each error, numbering them sequentially.\n\nIf the original text has no mistakes, just output the original text and nothing else. Do not wrap responses in quotes.\n\n\"\"\"\n{***}\n\"\"\"\n\"\"\"",
     "Inputs": [
         {
-            "InputPlaceholder": "请输入需要纠错的文本（例如：学术论文、业务报告、项目文档、小说等）。",
+            "InputPlaceholder": "请输入需要纠错的文本。",
             "InputLabel": "纠错文本"
         }
     ]
