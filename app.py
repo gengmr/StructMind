@@ -1,11 +1,15 @@
 from utils.init import set_page_style
 from config.config import PAGE_TITLE, LAYOUT, ICON_DIR, MENU_DIR, PADDING_TOP
 from utils.page import get_page_config, create_page, create_home_page, create_config_page
+from utils.css_style import apple_style
 
 
 def main():
     # 设置初始页面样式
     selected_page = setup_initial_page_style()
+
+    # 设置组件样式
+    apple_style()
 
     # 获取所有页面配置信息
     page_config = get_page_config(MENU_DIR)

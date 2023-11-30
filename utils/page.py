@@ -1,8 +1,10 @@
 import os
 import json
+import time
 import pandas as pd
 import streamlit as st
 import streamlit_antd_components as sac
+import pyperclip
 from utils.css_style import markdown_css, markdown_style, create_download_button
 from utils.menu import remove_numerical_prefix
 from config.config import prompt_placeholder, PAGE_TITLE
@@ -309,22 +311,30 @@ def create_page(page_config: dict, domain: str):
     sac.divider(label='Prompt', icon='feather', align='center', bold=True)
     col1, col2 = st.columns([1, 10])
 
+    # 设置prompt
+    prompt = ''
+    if mode == '中文模版':
+        # 格式化 prompt 模版，将 "{***}" 占位符替换成实际的输入值
+        prompt = page_config["ChinesePromptTemplate"]
+    if mode == '英文模版':
+        prompt = page_config["EnglishPromptTemplate"]
+    for value in input_values:
+        prompt = prompt.replace("{***}", str(value), 1)
+
     # 创建标签列
     with col1:
-        sac.tags([sac.Tag(label='生成结果', color='orange', bordered=False)])
+        if st.button('📋', key='button-{}'.format(domain)):
+            pyperclip.copy(prompt)
+            success_message = st.empty()  # 创建一个空的占位符
+            success_message.success('', icon="✅")  # 显示成功消息
+            time.sleep(0.5)  # 暂停0.5秒
+            success_message.empty()  # 清空消息
 
     # 创建代码显示列
     with col2:
-        if mode == '中文模版':
-            # 格式化 prompt 模版，将 "{***}" 占位符替换成实际的输入值
-            formatted_code = page_config["ChinesePromptTemplate"]
-        if mode == '英文模版':
-            formatted_code = page_config["EnglishPromptTemplate"]
-        for value in input_values:
-            formatted_code = formatted_code.replace("{***}", str(value), 1)
-
         # 使用 Streamlit 的 code 函数显示格式化后的代码
-        st.code(formatted_code)
+        st.code(prompt, line_numbers=True)
+
 
 
 
