@@ -7,7 +7,8 @@
     "Inputs": [
         {
             "InputPlaceholder": "请输入您要我总结的文本内容（例如：一段新闻报道、科学论文摘要、会议记录）。",
-            "InputLabel": "文本内容"
+            "InputLabel": "文本内容",
+            "InputList": null
         }
     ]
 }

@@ -7,7 +7,8 @@
     "Inputs": [
         {
             "InputPlaceholder": "请在此输入您希望增强的文本细节（例如：特定事件的背景信息、人物的详细描述、场景的丰富描绘）。",
-            "InputLabel": "文本细节"
+            "InputLabel": "文本细节",
+            "InputList": null
         }
     ]
 }

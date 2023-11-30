@@ -8,31 +8,61 @@ from utils.menu import remove_numerical_prefix
 from config.config import prompt_placeholder, PAGE_TITLE
 
 
-def create_input_section(placeholder, placeholder_tag, idx, field):
+def create_input_section(input_placeholder, input_placeholder_tag, input_list, idx, field):
+    custom_input = "自定义输入"
     col1, col2 = st.columns([1, 10])
     with col1:
-        sac.tags([sac.Tag(label=placeholder_tag, color='black', bordered=False)])
+        sac.tags([sac.Tag(label=input_placeholder_tag, color='black', bordered=False)])
     with col2:
         key = f"{field}-{idx}"
 
-        # 定义一个回调函数，当输入文本框文字改变时更新 session_state
+        # 定义文本区域内容变化时的回调函数
         def on_text_area_change():
-            st.session_state[key] = st.session_state[key + "-input"]
-        # 使用 key + "-input" 来临时存储文本区域的内容
-        input_value = st.text_area(
-            label="input",  # 提供非空的label值, 避免警告
-            height=0,
-            label_visibility="collapsed",
-            placeholder=placeholder,
-            value=st.session_state.get(key, ""),  # 从 session_state 获取初始值
-            key=key + "-input",  # 使用不同的 key
-            on_change=on_text_area_change  # 当文本框内容改变时调用函数
-        )
+            st.session_state[key + "-area"] = st.session_state[key + "-input"]
 
-        # 如果 session_state 中没有存储过当前文本框的值，则存储
-        if key not in st.session_state:
-            st.session_state[key] = input_value
-        return input_value
+        # 定义下拉列表内容变化时的回调函数
+        def on_select_area_change():
+            st.session_state[key + "-selectbox"] = st.session_state[key + "-select"]
+
+        # 只有当input_list不为空时，才创建下拉列表
+        if input_list:
+            options = [custom_input] + input_list
+
+            selected_option = st.selectbox(
+                label="xxx",  # 非空即可
+                options=options,
+                index=options.index(st.session_state.get(key + "-selectbox", custom_input)),
+                key=key + "-select",
+                on_change=on_select_area_change,
+                label_visibility="collapsed"
+            )
+
+            # 当选择“自定义输入”时，显示文本区域供用户输入
+            if selected_option == custom_input:
+                input_value = st.text_area(
+                    label="xxx",  # 非空即可
+                    height=0,
+                    label_visibility="collapsed",
+                    placeholder=input_placeholder,
+                    value=st.session_state.get(key + "-area", ""),  # 从 session_state 获取初始值
+                    key=key + "-input",
+                    on_change=on_text_area_change
+                )
+                return input_value
+            else:
+                return selected_option
+        else:
+            # input_list为空，直接使用文本输入
+            input_value = st.text_area(
+                label="input",
+                height=0,
+                label_visibility="collapsed",
+                placeholder=input_placeholder,
+                value=st.session_state.get(key + "-area", ""),  # 从 session_state 获取初始值
+                key=key + "-input",
+                on_change=on_text_area_change
+            )
+            return input_value
 
 
 def get_page_config(menu_dir):
@@ -271,7 +301,7 @@ def create_page(page_config: dict, domain: str):
 
     # 利用列表推导创建输入框部分，每个输入框都是通过 create_input_section 函数生成
     input_values = [
-        create_input_section(input['InputPlaceholder'], input['InputLabel'], idx, domain)
+        create_input_section(input['InputPlaceholder'], input['InputLabel'], input['InputList'], idx, domain)
         for idx, input in enumerate(page_config['Inputs'])
     ]
 
@@ -291,7 +321,7 @@ def create_page(page_config: dict, domain: str):
         if mode == '英文模版':
             formatted_code = page_config["EnglishPromptTemplate"]
         for value in input_values:
-            formatted_code = formatted_code.replace("{***}", value, 1)
+            formatted_code = formatted_code.replace("{***}", str(value), 1)
 
         # 使用 Streamlit 的 code 函数显示格式化后的代码
         st.code(formatted_code)

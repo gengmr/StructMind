@@ -7,7 +7,8 @@
     "Inputs": [
         {
             "InputPlaceholder": "请输入需要纠错的文本。",
-            "InputLabel": "纠错文本"
+            "InputLabel": "纠错文本",
+            "InputList": null
         }
     ]
 }

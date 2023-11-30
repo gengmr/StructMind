@@ -6,12 +6,18 @@
     "EnglishPromptTemplate": "Without changing the language, your task is to rewrite the text delimited by triple quotes according to the specified style. The required style is: {***}. Ensure output in the same language variety or dialect of the text - in other words don't change the language, and only give me the output and nothing else. Do not wrap responses in quotes.\n    \"\"\"\n    {***}\n    \"\"\"",
     "Inputs": [
         {
-            "InputPlaceholder": "请输入您希望的文章风格（例如：专业、学术、随意、幽默）。",
-            "InputLabel": "文章风格"
+            "InputPlaceholder": "请输入您希望的文章风格（例如：学术、随意、幽默）。",
+            "InputLabel": "文章风格",
+            "InputList": [
+                "学术风格。文风应严肃、严谨、朴实且准确。结构清晰合理，推理符合逻辑；语言应规范、简练、朴素，避免夸张或庸俗表达，确保概念和术语的明确性和准确性；表达方式应遵循语法和表达习惯。",
+                "随意",
+                "幽默"
+            ]
         },
         {
             "InputPlaceholder": "请输入您需要按照指定风格修改的文本。",
-            "InputLabel": "原始文本"
+            "InputLabel": "原始文本",
+            "InputList": null
         }
     ]
 }

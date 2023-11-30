@@ -43,7 +43,7 @@ def modify_json_template(EnglishPromptTemplate):
 if __name__ == '__main__':
     # Example usage of the function
     EnglishPromptTemplate = '''
-Please provide a detailed explanation in clear and simple language of the text within the triple quotes so that readers can have a better understanding.
+Rewrite the text delimited by triple quotes and output it shorter to be no more than half the number of characters of the original text. Keep the meaning the same. Only give me the output and nothing else.Do not wrap responses in quotes.  Now, using the concepts above, re-write the following text. Respond in the same language variety or dialect of the following text: 
 """
 ${selection}
 """

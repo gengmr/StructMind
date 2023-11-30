@@ -7,7 +7,8 @@
     "Inputs": [
         {
             "InputPlaceholder": "请输入您要继续写作的文本起始部分（例如：在一个风和日丽的早晨，...）",
-            "InputLabel": "起始文本"
+            "InputLabel": "起始文本",
+            "InputList": null
         }
     ]
 }

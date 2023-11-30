@@ -6,12 +6,14 @@
     "EnglishPromptTemplate": "You are a highly skilled AI trained in language translation. I would like you to translate the text delimited by triple quotes into {***}, ensuring that the translation is accurate, fluent, and faithful to the original.\nOnly give me the output and nothing else. Do not wrap responses in quotes. \n\"\"\"\n{***}\n\"\"\"",
     "Inputs": [
         {
-            "InputPlaceholder": "请输入目标语言（例如：英语、汉语、西班牙语）。",
-            "InputLabel": "目标语言"
+            "InputPlaceholder": "请输入目标语言（例如：英语、汉语）。",
+            "InputLabel": "目标语言",
+            "InputList": ["英语", "汉语"]
         },
         {
             "InputPlaceholder": "请输入您希望翻译的文本。",
-            "InputLabel": "翻译文本"
+            "InputLabel": "翻译文本",
+            "InputList": null
         }
     ]
 }

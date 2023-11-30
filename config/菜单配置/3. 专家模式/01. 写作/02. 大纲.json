@@ -7,7 +7,8 @@
     "Inputs": [
         {
             "InputPlaceholder": "请输入您的主题或关键词（例如：全球变暖、区块链技术、中美贸易）",
-            "InputLabel": "主题关键词"
+            "InputLabel": "主题关键词",
+            "InputList": null
         }
     ]
 }
