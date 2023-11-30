@@ -6,9 +6,9 @@
     "EnglishPromptTemplate": "Your task is to create a text based on the provided input information. Follow these steps and mark each step in the process:\n- Step 1: Understand the main theme of the article, ensuring a full grasp of its core idea and objective.\n- Step 2: Develop the writing precisely, maintaining high logical coherence and continuity.\n\n1. Input Information:\n    1. Article Type:\n    {***}\n    2. Article Theme:\n    {***}\n    3. Article Format:\n    {***}\n    4. Language Style:\n    {***}\n    5. Paragraph Count Requirement:\n    {***}\n    6. Word Count Requirement:\n    {***}\n    7. Keywords:\n    {***}\n    8. Writing Language:\n    {***}\n\n2. Task Requirements:\n    - Ensure clear logical content and rigorous structure.\n    - Completely and accurately fulfill all the specified requirements of the input information.\n    - Maintain overall consistency and professionalism of the article, ensuring clarity of theme and precision in word choice.",
     "Inputs": [
         {
-            "InputPlaceholder": "请输入您的撰写文章类型（例如：科研文章、项目文档、小说）。",
+            "InputPlaceholder": "请输入您的撰写文章类型（例如：科研文章、项目文档、小说、诗歌、杂文、散文）。",
             "InputLabel": "文章类型",
-            "InputList": ["科研文章", "项目文档", "小说"]
+            "InputList": ["科研文章", "项目文档", "小说", "诗歌","杂文", "散文"]
         },
         {
             "InputPlaceholder": "请描述您的文章主题，以明确文章的核心内容（例如：环境保护、市场分析、个人旅行经历等）。",

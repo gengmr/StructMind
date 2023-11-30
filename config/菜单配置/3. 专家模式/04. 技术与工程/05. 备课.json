@@ -8,17 +8,17 @@
         {
             "InputPlaceholder": "请概述您将要授课的课程内容及教学目标（如：管理学原理、市场营销案例分析等）。",
             "InputLabel": "课程内容",
-            "InputList": null
+            "InputList": ["工商管理"]
         },
         {
             "InputPlaceholder": "描述您的目标学生群体（如：大学本科生、MBA学员、具有不同学术背景的学生等）。",
             "InputLabel": "目标学生",
-            "InputList": null
+            "InputList": ["大学本科生", "硕士研究生", "MBA学员"]
         },
         {
             "InputPlaceholder": "提出您在PPT内容结构化方面的具体需求（如：理论框架阐述、实践案例展示、互动讨论环节设计等）。",
             "InputLabel": "具体需求",
-            "InputList": null
+            "InputList": ["理论框架阐述", "实践案例展示", "互动讨论环节设计"]
         }
     ]
 }
