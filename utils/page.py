@@ -1,6 +1,7 @@
 import os
 import json
-import time
+import streamlit.components.v1 as components
+import html
 import pandas as pd
 import streamlit as st
 import streamlit_antd_components as sac
@@ -323,12 +324,7 @@ def create_page(page_config: dict, domain: str):
 
     # 创建标签列
     with col1:
-        if st.button('📋', key='button-{}'.format(domain)):
-            pyperclip.copy(prompt)
-            success_message = st.empty()  # 创建一个空的占位符
-            success_message.success('', icon="✅")  # 显示成功消息
-            time.sleep(0.5)  # 暂停0.5秒
-            success_message.empty()  # 清空消息
+        sac.tags([sac.Tag(label='📋提示语', color='orange', bordered=False)])
 
     # 创建代码显示列
     with col2:
