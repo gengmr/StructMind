@@ -1,12 +1,10 @@
+# -*- coding: utf-8 -*-
 import os
 import json
-import streamlit.components.v1 as components
-import html
 import pandas as pd
 import streamlit as st
 import streamlit_antd_components as sac
-import pyperclip
-from utils.css_style import markdown_css, markdown_style, create_download_button
+from utils.css_style import markdown_css, markdown_style, create_download_button, highlight_code
 from utils.menu import remove_numerical_prefix
 from config.config import prompt_placeholder, PAGE_TITLE
 
@@ -324,13 +322,12 @@ def create_page(page_config: dict, domain: str):
 
     # 创建标签列
     with col1:
-        sac.tags([sac.Tag(label='📋提示语', color='orange', bordered=False)])
+        sac.tags([sac.Tag(label='📋提示语', color='orange', bordered=True)])
 
     # 创建代码显示列
     with col2:
-        # 使用 Streamlit 的 code 函数显示格式化后的代码
-        st.code(prompt, line_numbers=True)
-
+        # 使用自定义代码高亮组件显示
+        highlight_code(prompt, language='python')
 
 
 

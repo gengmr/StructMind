@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from utils.init import set_page_style
 from config.config import PAGE_TITLE, LAYOUT, ICON_DIR, MENU_DIR, PADDING_TOP
 from utils.page import get_page_config, create_page, create_home_page, create_config_page

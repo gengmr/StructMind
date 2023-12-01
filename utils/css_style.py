@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import json
 import base64
 
@@ -193,5 +194,104 @@ def create_download_button(label, data, file_name, mime):
     st.markdown(apple_style, unsafe_allow_html=True)
     st.markdown(download_link, unsafe_allow_html=True)
 
+
+def highlight_code(text, language):
+    file_path = 'config/img/copy.svg'
+    with open(file_path, 'r') as file:
+        svg_content = file.read()
+    # HTML, CSS, and JavaScript for the custom display with syntax highlighting
+    html = f"""
+    <html>
+    <head>
+    <style>
+        /* Custom styles */
+        .code-container {{
+            position: relative;
+            border: none !important;
+            border-radius: 15px;
+            padding: 10px;
+            margin-top: 0px;
+            font-family: 'Helvetica Neue', sans-serif;
+            font-size: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            height: 300px;
+            background-color: #F0F0F0;
+        }}
+        .code-container:hover {{
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.12);
+            transform: translateY(-2px);
+        }}
+        .code-container pre {{
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+            height: 280px;
+        }}
+        .code {{
+            padding: 10px;
+            box-sizing: border-box;
+        }}
+        .copy-button {{
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            outline: none;
+        }}
+        .copy-button img {{
+            width: 30px;
+            height: 30px;
+            transition: transform 0.3s ease;
+        }}
+        .copy-button:hover img {{
+            transform: scale(1.2);
+        }}
+        .copied-text {{
+            position: absolute;
+            top: 45px;
+            right: 10px;
+            color: green;
+            font-size: 15px;
+            display: none;
+        }}
+
+        /* Override highlight.js styles */
+        .hljs {{
+            background: transparent !important; /* Make background transparent */
+            color: #333; /* Optional: Set text color */
+        }}
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    </head>
+    <body>
+
+    <div class="code-container">
+        <pre><code class="{language} code">{text}</code></pre>
+        <button class="copy-button" onclick="copyCode()">
+            <img src="data:image/svg+xml;base64,{base64.b64encode(svg_content.encode()).decode()}" alt="Copy">
+        </button>
+        <div id="copied-text" class="copied-text">Copied!</div>
+    </div>
+
+    <script>
+    function copyCode() {{
+        var copyText = document.querySelector('.code-container .code');
+        navigator.clipboard.writeText(copyText.innerText);
+        var copiedText = document.getElementById("copied-text");
+        copiedText.style.display = 'block';
+        setTimeout(function() {{ copiedText.style.display = 'none'; }}, 2000);
+    }}
+    </script>
+
+    </body>
+    </html>
+    """
+
+    components.html(html, height=330)
 
 
