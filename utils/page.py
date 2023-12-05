@@ -330,4 +330,57 @@ def create_page(page_config: dict, domain: str):
         highlight_code(prompt, language='python')
 
 
+def create_ppt(page_config, domain):
+    tab = sac.steps(
+        items=[
+            sac.StepsItem(title='step 1', description='确定PPT主题及子主题'),
+            sac.StepsItem(title='step 2', description='生成json'),
+            sac.StepsItem(title='step 3', description='json格式检查'),
+            sac.StepsItem(title='step 4', description='PPT生成'),
+        ], format_func='title'
+    )
+    if tab == 'step 1':
+        st.markdown('### 请利用`分析模式`的`需求澄清`和`框架搭建`功能明确`PPT的主题和子主题`\n步骤如下：\n1. 利用`分析模式`的`需求澄清`的`任务目标`'
+                    '中填写`制作关于[此处填写PPT主题]`的PPT，得到`需求文档`\n2. 利用`分析模式`的`框架搭建`功能列出`PPT主题及子主题`')
+    elif tab == 'step 2':
+        create_page(page_config=page_config, domain=domain)
+    elif tab == 'step 3':
+        col1, col2 = st.columns([1, 10])
+
+        with col1:
+            sac.tags([sac.Tag(label="格式数据", color='black', bordered=False)])
+        with col2:
+            key = f"{domain}-json_input"
+            # 定义文本区域内容变化时的回调函数
+
+            def on_text_area_change():
+                st.session_state[key + "-area"] = st.session_state[key + "-input"]
+
+            input_data = st.text_area(
+                label="input",  # 提供非空的label值, 避免警告
+                height=200,
+                label_visibility="collapsed",
+                placeholder="请输入PPT的json数据",
+                key=key + "-input",  # 使用不同的 key
+                value=st.session_state.get(key + "-area", ""),
+                on_change=on_text_area_change  # 当文本框内容改变时调用函数
+            )
+
+            try:
+                # 尝试解析输入数据为JSON
+                json_data = json.loads(input_data)
+
+                # 如果成功，显示成功信息和JSON数据
+                st.success("数据符合JSON格式要求")
+
+                # 使用Markdown显示JSON数据
+                st.markdown("### JSON数据如下:")
+                st.json(json_data)
+            except json.JSONDecodeError:
+                # 如果解析失败，显示错误信息
+                st.error("数据不是JSON格式")
+
+
+
+
 

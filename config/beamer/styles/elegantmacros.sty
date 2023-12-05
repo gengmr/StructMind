@@ -1,0 +1,28 @@
+% 版权声明
+% 版权所有 (c) 2022 Lars Spreng
+% 此作品采用“知识共享署名4.0国际许可协议”进行许可。
+% 要查看该许可协议的副本，可访问 http://creativecommons.org/licenses/by/4.0/
+% 或向 Creative Commons, PO Box 1866, Mountain View, CA 94042, USA 发送信函。
+
+\mode<presentation>
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% 定义文件夹结构
+% 这部分代码定义了一个命令用于设置Beamer主题的文件夹路径
+
+% \beamer@calltheme 用于处理主题文件的加载
+% #1, #2, #3 分别代表传入的参数
+\def\beamer@calltheme#1#2#3{
+    \def\beamer@themelist{#2}
+    \@for\beamer@themename:=\beamer@themelist\do
+    {\usepackage[{#1}]{\beamer@themelocation/#3\beamer@themename}}
+}
+
+% \usefolder 用于设置主题文件的位置
+% #1 代表文件夹路径
+\def\usefolder#1{
+    \def\beamer@themelocation{#1}
+}
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+\mode<all>

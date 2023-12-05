@@ -1,0 +1,164 @@
+% 演示文稿模式设置
+\mode<presentation>
+
+% 引入必要的包
+\RequirePackage{tikz}
+
+% 目录格式的相关设置
+%---------------------------------------------------------
+% 目录格式的相关设置
+\makeatletter
+% 在开始新部分时重置节(section)计数器
+\AtBeginPart{%
+  \beamer@tocsectionnumber=0\relax
+  \setcounter{section}{0}
+}
+\makeatother
+
+% 新建一个用于记录节页码的计数器
+\newcounter{sectionpage}
+
+% 定义Dotfill命令，用于在目录中创建点线填充
+\makeatletter
+\newcommand \Dotfill {\leavevmode \cleaders \hb@xt@ 0.8em{\hss .\hss }\hfill \kern \z@}
+\makeatother
+
+% 重新定义目录中节、小节、子小节的显示方式，添加页码和点线
+\makeatletter
+\patchcmd{\beamer@section}
+    {\addtocontents{toc}{\protect\beamer@sectionintoc{\the\c@section}{#2}{\the\c@page}{\the\c@part}{\the\beamer@tocsectionnumber}}}
+    {\setcounter{sectionpage}{\insertframenumber}\stepcounter{sectionpage}%
+     \addtocontents{toc}{\protect\beamer@sectionintoc{\the\c@section}{#2\Dotfill\thesectionpage}{\the\c@page}{\the\c@part}{\the\beamer@tocsectionnumber}}}
+    {}{}
+
+\patchcmd{\beamer@subsection}
+    {\addtocontents{toc}{\protect\beamer@subsectionintoc{\the\c@section}{\the\c@subsection}{#2}{\the\c@page}{\the\c@part}{\the\beamer@tocsectionnumber}}}
+    {\setcounter{sectionpage}{\insertframenumber}\stepcounter{sectionpage}%
+     \addtocontents{toc}{\protect\beamer@subsectionintoc{\the\c@section}{\the\c@subsection}{#2\Dotfill\thesectionpage}{\the\c@page}{\the\c@part}{\the\beamer@tocsectionnumber}}}
+    {}{}
+
+\patchcmd{\beamer@subsubsection}
+    {\addtocontents{toc}{\protect\beamer@subsubsectionintoc{\the\c@section}{\the\c@subsection}{\the\c@subsubsection}{#2}{\the\c@page}{\the\c@part}{\the\beamer@tocsectionnumber}}}
+    {\setcounter{sectionpage}{\insertframenumber}\stepcounter{sectionpage}%
+     \addtocontents{toc}{\protect\beamer@subsubsectionintoc{\the\c@section}{\the\c@subsection}{\the\c@subsubsection}{#2\Dotfill\thesectionpage}{\the\c@page}{\the\c@part}{\the\beamer@tocsectionnumber}}}
+    {}{}
+\makeatother
+
+% 设置节、小节、子小节的样式
+\tikzset{
+  section number/.style={
+    minimum size=0.4em,
+    text=black,
+    inner sep=1.5pt,
+  },
+  section/.style={
+    draw=none,
+    rectangle,
+    minimum height=1em,
+    minimum width=0.8\textwidth,
+    text width=0.8\textwidth,
+    text=black,
+    align=left
+  },
+  subsection number/.style={
+    minimum size=0.4em,
+    text=black,
+    inner sep=1.5pt,
+  },
+  subsection/.style={
+    draw=none,
+    rectangle,
+    minimum height=1em,
+    minimum width=0.8\textwidth,
+    text width=0.8\textwidth,
+    text=black,
+    align=left
+  },
+  subsubsection number/.style={
+    minimum size=0.4em,
+    text=black,
+    inner sep=1.5pt,
+  },
+  subsubsection/.style={
+    draw=none,
+    rectangle,
+    minimum height=1em,
+    minimum width=0.8\textwidth,
+    text width=0.8\textwidth,
+    text=black,
+    align=left
+  }
+}
+
+% 定义目录中节、小节、子小节的显示模板
+\setbeamertemplate{section in toc}{\leavevmode {\bfseries \color{black}{\inserttocsectionnumber}}\hspace{0.3cm} \textbf{\color{black}{\inserttocsection}}\vspace{0.3em}}
+
+\setbeamertemplate{subsection in toc}{\leavevmode\leftskip=4.2em\rlap{\hskip-2em \small \inserttocsectionnumber.\inserttocsubsectionnumber}\hspace{0.2cm}\small\inserttocsubsection\par \vspace{0.3em}}
+
+\setbeamertemplate{subsubsection in toc}{\leavevmode\leftskip=8.2em\rlap{\hskip-2em \small \inserttocsectionnumber.\inserttocsubsectionnumber.\inserttocsubsubsectionnumber}\hspace{0.4cm}\small\inserttocsubsubsection\par \vspace{0.3em}}
+%---------------------------------------------------------
+
+% 定义强调和示例环境
+\newenvironment{emphasize}[1]{
+	\textcolor{primary}{#1}
+}
+
+\newenvironment{example}[1]{
+	\textcolor{tertiary}{#1}
+}
+
+\setbeamertemplate{block begin}
+{
+  \par\vskip\medskipamount%
+  \begin{beamercolorbox}[colsep*=2mm]{block title}
+    \usebeamerfont*{block title}\insertblocktitle%
+  \end{beamercolorbox}%
+  {\parskip0pt\par}%
+  \ifbeamercolorempty[bg]{block title}
+  {}
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[colsep*=2mm,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+}
+
+\setbeamertemplate{block example begin}
+{
+  \par\vskip\medskipamount%
+  \begin{beamercolorbox}[colsep*=2mm]{block title example}
+    \usebeamerfont*{block title example}\insertblocktitle%
+  \end{beamercolorbox}%
+  {\parskip0pt\par}%
+  \ifbeamercolorempty[bg]{block title example}
+  {}
+  {\ifbeamercolorempty[bg]{block body example}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body example}%
+  \begin{beamercolorbox}[colsep*=2mm,vmode]{block body example}%
+    \ifbeamercolorempty[bg]{block body example}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+}
+
+\setbeamertemplate{block alerted begin}
+{
+  \par\vskip\medskipamount%
+  \begin{beamercolorbox}[colsep*=2mm]{block title alerted}
+    \usebeamerfont*{block title alerted}\insertblocktitle%
+  \end{beamercolorbox}%
+  {\parskip0pt\par}%
+  \ifbeamercolorempty[bg]{block title alerted}
+  {}
+  {\ifbeamercolorempty[bg]{block body alerted}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body alerted}%
+  \begin{beamercolorbox}[colsep*=2mm,vmode]{block body alerted}%
+    \ifbeamercolorempty[bg]{block body alerted}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+}
+
+% 设置图形标题的分隔符
+\setbeamertemplate{caption label separator}[period]
+
+% 设置列表项的样式
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamerfont{itemize/enumerate subbody}{size=\normalfont}
+
+% 定义文献引用的格式（此处未提供具体内容）
+
+\mode<all>

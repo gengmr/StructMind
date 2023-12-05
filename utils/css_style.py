@@ -295,3 +295,47 @@ def highlight_code(text, language):
     components.html(html, height=330)
 
 
+def sidebar_style():
+    """
+    定义一个用于自定义 Streamlit 应用界面样式的函数。
+    该函数 `custom_streamlit_style` 主要通过 CSS（级联样式表）来定制 Streamlit 应用的界面元素。主要的样式调整包括隐藏应用的头部区域，以及对侧边栏的宽度和交互行为进行定制。此外，还隐藏了一些不必要的按钮和控件。
+    具体实现中，该函数使用一个多行字符串变量来存储 CSS 规则。这些规则专门针对 Streamlit 的头部(header)和侧边栏(sidebar)进行样式定制。例如，它设置了侧边栏在非悬停状态下的最小宽度，并在悬停时自动扩展其宽度。
+    为了将这些自定义样式应用到 Streamlit 应用中，本函数使用了 Streamlit 的 `st.markdown` 方法，并通过 `unsafe_allow_html=True` 参数启用了 HTML 内容的插入。这是因为 Streamlit 默认情况下不允许直接插入 HTML 或 CSS，但可以通过此参数进行覆盖。
+    此函数可用于提高 Streamlit 应用的视觉美感和用户交互体验，使应用界面更加精致和易用。
+    """
+    style = """
+    <style>
+    @media(hover: hover){  # 媒体查询，仅在设备支持悬停时应用以下样式
+        header[data-testid="stHeader"] {  # 针对 Streamlit 头部的样式
+            display:none;  # 隐藏头部
+        }
+        section[data-testid='stSidebar'] {  # 针对 Streamlit 侧边栏的样式
+            height: 100%;  # 高度设置为100%
+            min-width:35px !important;  # 最小宽度设置为35px，并覆盖其他样式
+            width: 35px !important;  # 宽度设置为35px，并覆盖其他样式
+            transform:translateX(0px);  # 不移动元素位置
+            position: relative;  # 相对定位
+            z-index: 1;  # 层叠顺序设置为1
+            top: 0;  # 顶部对齐
+            left: 0;  # 左侧对齐
+            overflow-x: hidden;  # 隐藏水平方向的滚动条
+            transition: 0.5s ease;  # 平滑过渡效果，持续时间0.5秒
+            padding-top: 60px;  # 顶部内边距为60px
+            white-space: nowrap;  # 文本不换行
+        }
+
+        section[data-testid='stSidebar']:hover{  # 当鼠标悬停在侧边栏时的样式
+            min-width: 330px !important;  # 悬停时最小宽度变为330px，并覆盖其他样式
+        }
+
+        button[kind="header"], div[data-testid="collapsedControl"] {  # 针对特定按钮和控件的样式
+            display: none;  # 隐藏这些元素
+        }
+    }
+    </style>
+    """
+    st.markdown(style, unsafe_allow_html=True)  # 使用 Streamlit 的 markdown 方法将样式注入到页面中，允许 HTML
+
+
+
+

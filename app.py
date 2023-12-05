@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from utils.init import set_page_style
 from config.config import PAGE_TITLE, LAYOUT, ICON_DIR, MENU_DIR, PADDING_TOP
-from utils.page import get_page_config, create_page, create_home_page, create_config_page
-from utils.css_style import apple_style
+from utils.page import get_page_config, create_page, create_home_page, create_config_page, create_ppt
+from utils.css_style import apple_style, custom_streamlit_style
 
 
 def main():
@@ -11,6 +11,7 @@ def main():
 
     # 设置组件样式
     apple_style()
+    custom_streamlit_style()
 
     # 获取所有页面配置信息
     page_config = get_page_config(MENU_DIR)
@@ -41,6 +42,8 @@ def generate_selected_page(selected_page, page_config):
         create_home_page()
     elif selected_page == '配置文件生成':
         create_config_page()
+    elif selected_page == '幻灯片制作':
+        create_ppt(page_config=page_config[selected_page], domain=selected_page)
     elif selected_page in page_config:
         create_page(page_config=page_config[selected_page], domain=selected_page)
 
