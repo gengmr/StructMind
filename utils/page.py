@@ -370,15 +370,19 @@ def create_ppt(page_config, domain):
                 # 尝试解析输入数据为JSON
                 json_data = json.loads(input_data)
 
-                # 如果成功，显示成功信息和JSON数据
-                st.success("数据符合JSON格式要求")
+                # 检查解析结果是否为字典或列表
+                if isinstance(json_data, (dict, list)):
+                    # 如果是字典或列表，显示成功信息和JSON数据
+                    st.success("数据符合JSON格式要求!")
+                    st.markdown("### JSON数据如下:")
+                    st.json(json_data)
+                else:
+                    # 如果解析结果不是字典或列表，则不是有效的JSON
+                    st.error("数据不是有效的JSON格式!")
 
-                # 使用Markdown显示JSON数据
-                st.markdown("### JSON数据如下:")
-                st.json(json_data)
             except json.JSONDecodeError:
-                # 如果解析失败，显示错误信息
-                st.error("数据不是JSON格式")
+                # 如果解析过程中出现异常，表示数据不是JSON格式
+                st.error("请输入JSON数据")
 
 
 

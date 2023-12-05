@@ -312,6 +312,7 @@ def sidebar_style():
 
         /* 设置侧边栏的基本样式 */
         section[data-testid='stSidebar'] {
+            background-color: #f5f5f7; /* 苹果设计风格的浅灰色背景 */
             height: 100%; /* 高度设置为100% */
             min-width:35px !important; /* 最小宽度设置为35px */
             width: 35px !important; /* 宽度固定为35px */
