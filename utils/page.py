@@ -287,10 +287,7 @@ def create_page(page_config: dict, domain: str):
     :param page_config: 包含页面信息的字典。
     :param domain: 领域
     """
-    mode = sac.tabs([
-        sac.TabsItem(label='中文模版'),
-        sac.TabsItem(label='英文模版')
-    ], format_func='title', align='center', grow=True)
+
     # 获取专家的领域和用途说明
     usage_description = page_config['UsageDescription']
 
@@ -310,19 +307,16 @@ def create_page(page_config: dict, domain: str):
     sac.divider(label='Prompt', icon='feather', align='center', bold=True)
     col1, col2 = st.columns([1, 10])
 
-    # 设置prompt
-    prompt = ''
-    if mode == '中文模版':
-        # 格式化 prompt 模版，将 "{***}" 占位符替换成实际的输入值
-        prompt = page_config["ChinesePromptTemplate"]
-    if mode == '英文模版':
-        prompt = page_config["EnglishPromptTemplate"]
-    for value in input_values:
-        prompt = prompt.replace("{***}", str(value), 1)
-
     # 创建标签列
     with col1:
-        sac.tags([sac.Tag(label='📋提示语', color='orange', bordered=True)])
+        mode = sac.switch(label='英语模式', value=True, size='small')
+        if mode:
+            prompt = page_config["EnglishPromptTemplate"]
+        else:
+            prompt = page_config["ChinesePromptTemplate"]
+        # 格式化 prompt 模版，将 "{***}" 占位符替换成实际的输入值
+        for value in input_values:
+            prompt = prompt.replace("{***}", str(value), 1)
 
     # 创建代码显示列
     with col2:

@@ -1,17 +1,13 @@
-# -*- coding: utf-8 -*-
+from st_on_hover_tabs import on_hover_tabs
 import streamlit as st
 
-# 初始化session_state
-if 'input_text' not in st.session_state:
-    st.session_state['input_text'] = ''
+st.set_page_config(layout="wide")
+st.header("Custom tab component for on-hover navigation bar")
+st.markdown('<style>' + open('./style.css').read() + '</style>', unsafe_allow_html=True)
 
-# 更新函数
-def update_text():
-    st.session_state['input_text'] = st.session_state["input_box"]
-    # 显示实时文本
-    st.write("实时显示：", st.session_state['input_text'])
 
-# 文本输入框
-text_input = st.text_input("在此输入文本：", value=st.session_state['input_text'], key="input_box", on_change=update_text)
+main_tabs = on_hover_tabs(tabName=['Dashboard', 'Money', 'Economy'],
+                              iconName=['dashboard', 'money', 'economy'], default_choice=0)
+print(main_tabs)
 
 
