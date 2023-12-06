@@ -32,7 +32,7 @@ def set_page_style(page_title, layout, icon_dir, padding_top, menu_dir):
     # 设置页面布局和标题
     st.set_page_config(page_title=page_title, layout=layout)
     top_blank_set(padding_top=padding_top)
-    icon_set(icon_dir=icon_dir)  # 设置图片
+    # icon_set()  # 设置侧边栏图标
 
     # 设置侧边栏菜单
     with st.sidebar:

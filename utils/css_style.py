@@ -2,6 +2,8 @@ import streamlit as st
 import streamlit.components.v1 as components
 import json
 import base64
+import shutil
+from pathlib import Path
 
 
 def apple_style():
@@ -326,7 +328,7 @@ def sidebar_style():
             top: 0; /* 顶部对齐 */
             left: 0; /* 左侧对齐 */
             overflow-x: hidden; /* 水平滚动条隐藏 */
-            transition: 1s ease; /* 过渡效果，持续时间0.5秒 */
+            transition: 0.5s ease; /* 过渡效果，持续时间0.5秒 */
             padding-top: 60px; /* 顶部内边距为60px */
             white-space: nowrap; /* 不允许文本换行 */
         }
@@ -345,6 +347,7 @@ def sidebar_style():
     """
     # 使用Streamlit的markdown方法来渲染这个样式字符串，并允许使用不安全的HTML
     st.markdown(style, unsafe_allow_html=True)
+
 
 
 

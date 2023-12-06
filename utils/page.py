@@ -6,7 +6,8 @@ import streamlit as st
 import streamlit_antd_components as sac
 from utils.css_style import markdown_css, markdown_style, create_download_button, highlight_code
 from utils.menu import remove_numerical_prefix
-from config.config import prompt_placeholder, PAGE_TITLE
+from utils.latex import json_to_latex_beamer
+from config.config import prompt_placeholder, PAGE_TITLE, AUTHOR
 
 
 def create_input_section(input_placeholder, input_placeholder_tag, input_list, idx, field):
@@ -309,7 +310,7 @@ def create_page(page_config: dict, domain: str):
 
     # 创建标签列
     with col1:
-        mode = sac.switch(label='英语模式', value=True, size='small')
+        mode = sac.switch(label='英语模式', value=False, size='small')
         if mode:
             prompt = page_config["EnglishPromptTemplate"]
         else:
@@ -325,6 +326,12 @@ def create_page(page_config: dict, domain: str):
 
 
 def create_ppt(page_config, domain):
+    # json格式是否正确, json数据
+    if 'json_flag' not in st.session_state:
+        st.session_state['json_flag'] = False
+    if 'json_data' not in st.session_state:
+        st.session_state['json_data'] = ""
+
     tab = sac.steps(
         items=[
             sac.StepsItem(title='step 1', description='确定PPT主题及子主题'),
@@ -354,7 +361,7 @@ def create_ppt(page_config, domain):
                 label="input",  # 提供非空的label值, 避免警告
                 height=200,
                 label_visibility="collapsed",
-                placeholder="请输入PPT的json数据",
+                placeholder="请输入PPT的JSON数据",
                 key=key + "-input",  # 使用不同的 key
                 value=st.session_state.get(key + "-area", ""),
                 on_change=on_text_area_change  # 当文本框内容改变时调用函数
@@ -362,21 +369,34 @@ def create_ppt(page_config, domain):
 
             try:
                 # 尝试解析输入数据为JSON
-                json_data = json.loads(input_data)
+                st.session_state['json_data'] = json.loads(input_data)
 
                 # 检查解析结果是否为字典或列表
-                if isinstance(json_data, (dict, list)):
+                if isinstance(st.session_state['json_data'], (dict, list)):
                     # 如果是字典或列表，显示成功信息和JSON数据
+                    st.session_state['json_flag'] = True
                     st.success("数据符合JSON格式要求!")
                     st.markdown("### JSON数据如下:")
-                    st.json(json_data)
+                    st.json(st.session_state['json_data'])
                 else:
                     # 如果解析结果不是字典或列表，则不是有效的JSON
+                    st.session_state['json_flag'] = False
                     st.error("数据不是有效的JSON格式!")
 
             except json.JSONDecodeError:
+                st.session_state['json_flag'] = False
                 # 如果解析过程中出现异常，表示数据不是JSON格式
-                st.error("请输入JSON数据")
+                st.error("数据不是有效的JSON格式!")
+
+    elif tab == 'step 4':
+        if not st.session_state['json_flag']:
+            st.error("请在步骤3中输入PPT的JSON数据!")
+        else:
+            highlight_code(json_to_latex_beamer(json_data=st.session_state['json_data'], author=AUTHOR), language='python')
+
+
+
+
 
 
 
