@@ -322,7 +322,7 @@ def sidebar_style():
             top: 0; /* 顶部对齐 */
             left: 0; /* 左侧对齐 */
             overflow-x: hidden; /* 水平滚动条隐藏 */
-            transition: 0s ease; /* 过渡效果，持续时间0.5秒 */
+            transition: 0s ease; /* 过渡效果，持续时间0秒 */
             padding-top: 60px; /* 顶部内边距为60px */
             white-space: nowrap; /* 不允许文本换行 */
         }
