@@ -3,7 +3,7 @@ MENU_DIR = 'config/菜单配置'
 # 图标文件地址
 ICON_DIR = 'config/img/logo.png'
 # 侧边栏上方空白大小
-PADDING_TOP = 30
+PADDING_TOP = 0
 # 页面标题
 PAGE_TITLE = "StructMind"
 # 页面宽屏模式

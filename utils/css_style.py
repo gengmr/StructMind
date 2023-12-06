@@ -302,8 +302,12 @@ def sidebar_style():
     # 创建一个多行字符串，其中包含CSS样式
     style = """
     <style>
+        
     @media(hover: hover){
         /* 当设备支持悬停时，应用以下样式 */
+        [data-testid='stSidebarUserContent'] iframe[title='streamlit_antd_components.utils.component_func.sac'] {
+            width: 280px !important;  /* 侧边栏iframe宽度设置为 280px，使其悬停时不改变样式 */
+        }
 
         /* 隐藏页面顶部的header部分 */
         header[data-testid="stHeader"] {
@@ -314,15 +318,15 @@ def sidebar_style():
         section[data-testid='stSidebar'] {
             background-color: #f5f5f7; /* 苹果设计风格的浅灰色背景 */
             height: 100%; /* 高度设置为100% */
-            min-width:35px !important; /* 最小宽度设置为35px */
-            width: 35px !important; /* 宽度固定为35px */
+            min-width:30px !important; /* 最小宽度设置为30px */
+            width: 30px !important; /* 宽度固定为30px */
             transform:translateX(0px); /* 位移变换设置为0 */
             position: relative; /* 相对定位 */
             z-index: 1; /* 层级为1 */
             top: 0; /* 顶部对齐 */
             left: 0; /* 左侧对齐 */
             overflow-x: hidden; /* 水平滚动条隐藏 */
-            transition: 0s ease; /* 过渡效果，持续时间0秒 */
+            transition: 1s ease; /* 过渡效果，持续时间0.5秒 */
             padding-top: 60px; /* 顶部内边距为60px */
             white-space: nowrap; /* 不允许文本换行 */
         }
