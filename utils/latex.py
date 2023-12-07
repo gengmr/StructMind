@@ -1,4 +1,48 @@
+import re
 import json
+
+
+def escape_latex_special_chars(text):
+    """
+    转义 LaTeX 中的特殊字符，对 \alert{...} 结构内的内容除 \、{ 和 } 外的字符进行转义。
+
+    参数:
+    text (str): 需要转义的字符串。
+
+    返回:
+    str: 转义后的字符串。
+    """
+
+    # 定义 LaTeX 特殊字符及其转义形式
+    special_chars = {
+        '\\': '\\\\',
+        '{': '\\{',
+        '}': '\\}',
+        '%': '\\%',
+        '$': '\\$',
+        '&': '\\&',
+        '#': '\\#',
+        '_': '\\_',
+        '^': '\\^',
+        '~': '\\~'
+    }
+
+    # 用于匹配 \alert{...} 结构的正则表达式
+    alert_pattern = re.compile(r'(\\alert\{.*?\})')
+
+    def escape_part(part):
+        if alert_pattern.fullmatch(part):
+            # 对于 \alert{...} 结构，只转义内部的特殊字符，除了 \、{ 和 }
+            return re.sub(r'([%$&#_^~])', lambda m: special_chars[m.group()], part)
+        else:
+            # 对于其他文本，转义所有特殊字符
+            return ''.join(special_chars.get(char, char) for char in part)
+
+    # 分割文本并应用转义
+    parts = alert_pattern.split(text)
+    escaped_text = ''.join(escape_part(part) for part in parts)
+
+    return escaped_text
 
 
 def json_to_latex_beamer(json_data, author):
@@ -19,7 +63,7 @@ def json_to_latex_beamer(json_data, author):
     latex_code += "% 导入演示文稿的设置\n\\input{loadslides.tex}\n\n"
 
     # 设置文档的标题、副标题和作者信息
-    latex_code += "% 设置文档的标题、副标题、作者、日期信息"
+    latex_code += "% 设置文档的标题、副标题、作者、日期信息\n"
     latex_code += "\\title{%(title)s}\n" % json_data
     latex_code += "\\subtitle{%(subtitle)s}\n" % json_data
     latex_code += f"\\author{{{author}}}\n"
@@ -35,7 +79,7 @@ def json_to_latex_beamer(json_data, author):
         # 遍历每个小节
         for subsection_idx, subsection in enumerate(section.get("subsections", [])):
             latex_code += f"% subsection {section_idx+1}-{subsection_idx+1}\n"
-            latex_code += "\\subsection{%s}\n" % subsection["title"]
+            latex_code += "\\subsection{%s}\n" % escape_latex_special_chars(subsection["title"])
 
             # 遍历每个帧
             for frame_idx, frame in enumerate(subsection.get("frames", [])):
@@ -45,37 +89,38 @@ def json_to_latex_beamer(json_data, author):
                 # 遍历帧中的每个内容
                 for content in frame.get("contents", []):
                     if content["type"] == "text":
-                        latex_code += content["data"] + "\n"
+                        latex_code += escape_latex_special_chars(content["data"]) + "\\\\\n"
                     elif content["type"] == "list":
                         latex_code += "\\begin{itemize}\n"
                         for item in content["items"]:
-                            latex_code += "\t\\item {}\n".format(item)
+                            latex_code += "\t\\item {}\n".format(escape_latex_special_chars(item))
                         latex_code += "\\end{itemize}\n"
                     elif content["type"] == "grouped_list":
                         latex_code += "\\begin{itemize}\n"
                         for item in content["dict"]:
-                            latex_code += "\t\\item {}\n".format(item)
+                            latex_code += "\t\\item {}\n".format(escape_latex_special_chars(item))
                             if content["dict"][item] != []:
                                 latex_code += "\\begin{itemize}\n"
                                 for subitem in content["dict"][item]:
-                                    latex_code += "\t\t\\item {}\n".format(subitem)
+                                    latex_code += "\t\t\\item {}\n".format(escape_latex_special_chars(subitem))
                                 latex_code += "\\end{itemize}\n"
                         latex_code += "\\end{itemize}\n"
-
                     elif content["type"] == "table":
                         # 设置表格的额外行高和列格式
                         latex_code += "\\setlength\\extrarowheight{3pt}\n"
                         # 生成列格式字符串，例如对于两列，结果应为 "|l|l|"
                         column_format = "|" + "|".join(["l" for _ in content["columns"]]) + "|"
                         # 使用格式化字符串
+                        latex_code += "\centering\n"
                         latex_code += "\\begin{tabular}{" + column_format + "}\n"
                         latex_code += "\\hline\n"
                         # 添加行颜色和列标题
                         latex_code += "\\rowcolor{primary}\\color{white}" + " & \\color{white}".join(
-                            content["columns"]) + " \\\\\\hline\n"
+                            content["columns"]) + " \\\\\n\hline\n"
 
                         # 添加表格内容
                         for row in content["rows"]:
+                            row = [escape_latex_special_chars(item) for item in row]
                             latex_code += " & ".join(row) + " \\\\\n"
                             latex_code += "\\hline\n"  # 每行后添加横线
 
