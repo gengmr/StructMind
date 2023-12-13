@@ -27,14 +27,28 @@
     \usebeamerfont{part title}\insertpart
   }
 }
+
 % 生成标题页命令
 \newcommand{\maketitleframe}{
-    {
-        \setbeamertemplate{footline}{}
-        \begin{frame}
-            \titlepage
-        \end{frame}
+    \begingroup
+    \makeatletter
+    % 临时重定义frametitle模板，移除章节编号的插入
+    \setbeamertemplate{frametitle}{
+        \vspace{1cm}
+        \usebeamercolor*[fg]{frametitle}\Large\insertframetitle\par\vskip1pt
+        {\usebeamercolor*[fg]{framesubtitle}\small\insertframesubtitle}
+        \vspace*{0.5cm}
     }
+
+    \setbeamertemplate{footline}{}
+    \begin{frame}[plain]
+        \frametitle{} % 空标题
+        \titlepage
+    \end{frame}
+
+    \makeatother
+    \endgroup
+
     \addtocounter{framenumber}{-1}
 }
 % 生成目录页命令
@@ -43,6 +57,27 @@
         \frametitle{目录}
         \tableofcontents
     \end{frame}
+}
+% 生成致谢页命令
+\newcommand{\thankspage}{
+    \begingroup
+    \makeatletter
+    % 临时重定义frametitle模板，移除章节编号的插入
+    \setbeamertemplate{frametitle}{
+        \vspace{1cm}
+        \usebeamercolor*[fg]{frametitle}\Large\insertframetitle\par\vskip1pt
+        {\usebeamercolor*[fg]{framesubtitle}\small\insertframesubtitle}
+        \vspace*{0.5cm}
+    }
+    % 创建帧
+    \begin{frame}
+        \frametitle{} % 空标题
+        \begin{center}
+            {\Huge\calligra Thank You}
+        \end{center}
+    \end{frame}
+    \makeatother
+    \endgroup
 }
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -126,8 +161,11 @@
 % 导入必要的包
 \usepackage{fontspec}
 \usepackage{xeCJK}
+\usepackage{calligra}
+\usepackage{tabularx}
+\usepackage{colortbl}
 
-% 设置中文字体
+% PingFang 字体定义
 \setCJKmainfont{PingFang.ttf}[
     Path = fonts/,
     Extension = .ttf,
@@ -136,3 +174,4 @@
     ItalicFont = *,
     BoldItalicFont = *
 ]
+

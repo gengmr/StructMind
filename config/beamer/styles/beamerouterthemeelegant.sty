@@ -1,16 +1,18 @@
 \mode<presentation>
 
 %~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-% 设置帧标题的边距
-% \vspace{1cm} 在帧标题上方添加额外空间
-% \insertframetitle 插入帧标题
-% \insertframesubtitle 插入帧副标题，使用小字体
+% 设置帧标题的边距和样式
 \setbeamertemplate{frametitle}{
     \vspace{1cm}
-    \usebeamercolor*[fg]{frametitle}\insertframetitle \par\vskip1pt
+    \usebeamercolor*[fg]{frametitle}\Large\insertframetitle\par\vskip1pt
     {\usebeamercolor*[fg]{framesubtitle}\small\insertframesubtitle}
     \vspace*{0.5cm}
 }
+
+
+% 修改小节计数器格式，以包括章节序号
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
 
 % 自动化帧标题
 % 检查每个帧是否有标题，如果没有则自动插入章节或小节作为标题
@@ -24,17 +26,16 @@
   }
 \makeatother
 
-% 修改帧标题模板，自动插入章节或小节标题
 \addtobeamertemplate{frametitle}{
   \ifx\insertframetitle\empty
     \ifx\insertframesubtitle\empty
       \ifx\insertsubsection\empty
-        \frametitle{\insertsectionhead}
+        \frametitle{\thesection. \insertsectionhead}
       \else
-        \frametitle{\insertsectionhead}\framesubtitle{\insertsubsectionhead}
+        \frametitle{\thesection. \insertsectionhead}\framesubtitle{\thesubsection. \insertsubsectionhead}
       \fi
     \else
-        \frametitle{\insertsectionhead} % 如果帧标题为空但指定了副标题，则插入章节作为帧标题
+        \frametitle{\thesection. \insertsectionhead} % 如果帧标题为空但指定了副标题，则插入带序号的章节作为帧标题
     \fi
   \else
   \fi
@@ -52,7 +53,6 @@
 % 定制目录按钮的颜色
 \setbeamercolor{button}{bg=blue!20,fg=black}
 \setbeamertemplate{button}{\insertbuttontext}
-
 
 
 \mode<all>

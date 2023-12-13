@@ -44,3 +44,4 @@ prompt_placeholder = """请输入{language}提示模版【占位符用"{***}"表
 ```
 """
 AUTHOR = "作者姓名"
+INSTITUTE = "XX机构"

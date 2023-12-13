@@ -7,7 +7,7 @@ import streamlit_antd_components as sac
 from utils.css_style import markdown_css, markdown_style, create_download_button, highlight_code
 from utils.menu import remove_numerical_prefix
 from utils.latex import json_to_latex_beamer
-from config.config import prompt_placeholder, PAGE_TITLE, AUTHOR
+from config.config import prompt_placeholder, PAGE_TITLE, AUTHOR, INSTITUTE
 
 
 def create_input_section(input_placeholder, input_placeholder_tag, input_list, idx, field):
@@ -392,7 +392,7 @@ def create_ppt(page_config, domain):
         if not st.session_state['json_flag']:
             st.error("请在步骤3中输入PPT的JSON数据!")
         else:
-            highlight_code(json_to_latex_beamer(json_data=st.session_state['json_data'], author=AUTHOR), language='python')
+            highlight_code(json_to_latex_beamer(json_data=st.session_state['json_data'], author=AUTHOR, institute=INSTITUTE), language='python')
 
 
 

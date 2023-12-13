@@ -45,12 +45,13 @@ def escape_latex_special_chars(text):
     return escaped_text
 
 
-def json_to_latex_beamer(json_data, author):
+def json_to_latex_beamer(json_data, author, institute):
     """
     根据提供的JSON数据生成LaTeX Beamer演示文稿代码。
 
     :param json_data: 包含演示文稿结构的JSON数据。
     :param author: Beamer作者
+    :param author: Beamer作者机构
     :return: 生成的LaTeX Beamer代码。
     """
 
@@ -66,7 +67,8 @@ def json_to_latex_beamer(json_data, author):
     latex_code += "% 设置文档的标题、副标题、作者、日期信息\n"
     latex_code += "\\title{%(title)s}\n" % json_data
     latex_code += "\\subtitle{%(subtitle)s}\n" % json_data
-    latex_code += f"\\author{{{author}}}\n"
+    latex_code += f"%\\author{{{author}}}\n"
+    latex_code += f"%\\institute{{{institute}}}\n"
     latex_code += "\\date{\\today}\n"
     latex_code += "\\begin{document}\n"
     latex_code += "\n% 生成标题页\n\maketitleframe\n% 生成目录页\n\maketocframe\n\n"
@@ -107,33 +109,30 @@ def json_to_latex_beamer(json_data, author):
                         latex_code += "\\end{itemize}\n"
                     elif content["type"] == "table":
                         # 设置表格的额外行高和列格式
+                        latex_code += "~\\\\\n"
                         latex_code += "\\setlength\\extrarowheight{3pt}\n"
                         # 生成列格式字符串，例如对于两列，结果应为 "|l|l|"
-                        column_format = "|" + "|".join(["l" for _ in content["columns"]]) + "|"
+                        column_format = "{" + " ".join([">{\\centering\\arraybackslash}X" for _ in content["columns"]]) + "}"
                         # 使用格式化字符串
-                        latex_code += "\centering\n"
-                        latex_code += "\\begin{tabular}{" + column_format + "}\n"
+                        latex_code += "\\begin{tabularx}" + "{\\textwidth}" + column_format + "\n"
                         latex_code += "\\hline\n"
+                        columns = ["\\textbf{"+text+"}" for text in content["columns"]]
                         # 添加行颜色和列标题
-                        latex_code += "\\rowcolor{primary}\\color{white}" + " & \\color{white}".join(
-                            content["columns"]) + " \\\\\n\hline\n"
-
+                        latex_code += "\\rowcolor{TableTitleColor} " + " & ".join(columns) + " \\\\\n"
+                        latex_code += "\\hline\n"
                         # 添加表格内容
                         for row in content["rows"]:
                             row = [escape_latex_special_chars(item) for item in row]
                             latex_code += " & ".join(row) + " \\\\\n"
-                            latex_code += "\\hline\n"  # 每行后添加横线
-
-                        latex_code += "\\end{tabular}\n"
+                        latex_code += "\\hline\n"
+                        latex_code += "\\end{tabularx}\n"
 
                 latex_code += "\\end{frame}\n\n"
 
     # 添加结束幻灯片
     if json_data.get("thanks", False):
-        latex_code += "\\section{}\n"
-        latex_code += "\\begin{frame}\n"
-        latex_code += "\\Huge{\\centerline{Thank you!}}\n"
-        latex_code += "\\end{frame}\n"
+        latex_code += "% 致谢页\n"
+        latex_code += "\\thankspage\n"
 
     # 结束文档
     latex_code += "\\end{document}\n"
@@ -143,7 +142,7 @@ def json_to_latex_beamer(json_data, author):
 
 if __name__ == '__main__':
     with open('../test.json', 'r', encoding='utf8') as fcc_file:
-        author = '张三'
+        author, institute = '张三', 'xx机构'
         data = json.load(fcc_file)
-        latex_code = json_to_latex_beamer(data, author=author)
+        latex_code = json_to_latex_beamer(data, author=author, institute=institute)
         print(latex_code)
