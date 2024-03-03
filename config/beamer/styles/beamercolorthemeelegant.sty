@@ -1,0 +1,108 @@
+\mode<presentation>
+
+% 引入颜色包
+\RequirePackage{xcolor}
+
+% 定义基本颜色
+\definecolor{Gray}{HTML}{808080}
+
+% 主题颜色选项设置
+\DeclareOptionBeamer{style}{\def\beamer@mytheme@style{#1}}
+\ExecuteOptionsBeamer{style=lecture} % 设置默认风格为 lecture
+\ProcessOptionsBeamer
+
+% 定义不同主题风格的颜色
+\def\beamer@mytheme@stylegold{gold}%
+\def\beamer@mytheme@styleorange{orange}%
+\def\beamer@mytheme@stylered{red}%
+\def\beamer@mytheme@stylegray{gray}%
+
+% 根据主题风格选择相应的颜色
+\ifx\beamer@mytheme@style\beamer@mytheme@stylegold%
+	% Gold 风格
+    \definecolor{primary}{HTML}{08457E}
+    \definecolor{alert}{HTML}{F209B1}
+    \definecolor{secondary}{HTML}{B8860B}
+    \definecolor{tertiary}{HTML}{B22222}
+    \definecolor{text}{HTML}{000000}
+    \setbeamercolor*{framesubtitle}{fg=secondary,bg=white}
+\else\ifx\beamer@mytheme@style\beamer@mytheme@stylered%
+		% Red 风格
+        \definecolor{primary}{HTML}{08457E}
+        \definecolor{alert}{HTML}{F209B1}
+        \definecolor{secondary}{HTML}{B02A30}
+        \definecolor{tertiary}{HTML}{006400}
+        \definecolor{text}{HTML}{000000}
+        \setbeamercolor*{framesubtitle}{fg=secondary,bg=white}
+    \else\ifx\beamer@mytheme@style\beamer@mytheme@styleorange%
+ 		% Orange 风格
+            \definecolor{primary}{HTML}{08457E}
+            \definecolor{alert}{HTML}{F209B1}
+            \definecolor{secondary}{HTML}{CC5500}
+            \definecolor{tertiary}{HTML}{008B8B}
+            \definecolor{text}{HTML}{000000}
+            \setbeamercolor*{framesubtitle}{fg=secondary,bg=white}
+	\else\ifx\beamer@mytheme@style\beamer@mytheme@stylegray%
+ 		% Gray 风格
+        \definecolor{primary}{HTML}{08457E}
+        \definecolor{alert}{HTML}{F209B1}
+        \definecolor{secondary}{HTML}{E60073}
+        \definecolor{tertiary}{HTML}{33CCCC}
+        \definecolor{text}{HTML}{424242}
+        \setbeamercolor*{framesubtitle}{fg=Gray,bg=white}
+    \else
+    	% 默认为 lecture 风格
+            \definecolor{primary}{HTML}{2c3e50}
+            \definecolor{alert}{HTML}{d35400}
+            \definecolor{secondary}{HTML}{3b5998}
+            \definecolor{tertiary}{HTML}{33CCCC}
+            \definecolor{text}{HTML}{000000}
+            \setbeamercolor*{framesubtitle}{fg=secondary,bg=white}
+    \fi\fi\fi\fi%
+
+% 设置各种元素的颜色
+% 设置背景颜色
+\definecolor{CustomColor}{HTML}{f6f4e8}
+% 定义表格头颜色
+\definecolor{TableTitleColor}{HTML}{d3e0ea}
+\setbeamercolor*{background canvas}{bg=CustomColor}
+\setbeamercolor*{footer}{fg=Gray} % 设置页脚颜色为灰色
+\setbeamercolor*{footer text}{fg=primary} % 设置页脚文本颜色为主色
+\setbeamercolor*{footline}{fg=Gray} % 设置页脚线条颜色为灰色
+\setbeamercolor*{frametitle}{fg=primary,bg=} % 设置幻灯片标题的前景色为主色，背景色为透明
+\setbeamercolor*{title}{fg=primary,bg=} % 设置演示文稿标题的前景色为主色，背景色为透明
+\setbeamercolor*{author}{fg=text,bg=} % 设置作者信息的前景色为文本色，背景色为透明
+\setbeamercolor*{part title}{fg=primary} % 设置部分标题的前景色为主色
+\setbeamercolor*{caption name}{fg=primary} % 设置标题名称的前景色为主色
+\setbeamercolor*{section in toc}{fg=black} % 设置目录中小节的颜色为黑色
+\setbeamercolor*{secondary}{fg=secondary!10,bg=white} % 设置次级元素的前景色为次级色，背景色为白色
+\setbeamercolor*{alerted text}{fg=alert,bg=white} % 设置强调文本的前景色为次级色，背景色为白色
+\setbeamercolor*{example text}{fg=tertiary,bg=white} % 设置示例文本的前景色为第三级色，背景色为白色
+\setbeamercolor*{normal text}{fg=text,bg=white} % 设置普通文本的前景色为文本色，背景色为白色
+\setbeamercolor*{itemize item}{fg=primary} % 设置项目符号列表项目的前景色为主色
+\setbeamercolor*{itemize subitem}{fg=primary} % 设置项目符号子列表项目的前景色为主色
+\setbeamercolor*{itemize subsubitem}{fg=primary} % 设置项目符号子子列表项目的前景色为主色
+\setbeamercolor*{enumerate item}{fg=primary} % 设置枚举列表项目的前景色为主色
+\setbeamercolor*{enumerate subitem}{fg=primary} % 设置枚举子列表项目的前景色为主色
+\setbeamercolor*{enumerate subsubitem}{fg=primary} % 设置枚举子子列表项目的前景色为主色
+\setbeamercolor*{description item}{fg=primary} % 设置描述列表项目的前景色为主色
+\setbeamercolor*{caption name}{fg=text} % 设置标题名称的前景色为文本色
+\setbeamercolor{button}{bg=primary,fg=white} % 设置按钮的背景色为主色，前景色为白色
+
+
+% 设置块（block）元素的颜色
+\setbeamercolor{block title}{bg=white, fg=primary}
+\setbeamercolor{block body}{fg=text}
+\setbeamercolor{block title alerted}{bg=white, fg=secondary}
+\setbeamercolor{block body alerted}{bg=white, fg=text}
+\setbeamercolor{block title example}{bg=white, fg=tertiary}
+\setbeamercolor{block body example}{bg=white, fg=text}
+
+% 设置参考文献条目的颜色
+\setbeamercolor*{bibliography item}{fg=primary}
+\setbeamercolor*{bibliography entry author}{fg=primary}
+\setbeamercolor*{bibliography entry title}{fg=text}
+\setbeamercolor*{bibliography entry location}{fg=text}
+\setbeamercolor*{bibliography entry note}{fg=text}
+
+\mode<all>

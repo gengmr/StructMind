@@ -1,0 +1,40 @@
+\mode<presentation>
+
+% 设置主题样式参数
+\DeclareOptionBeamer{style}{
+    \PassOptionsToPackage{style=#1}{styles/beamercolorthemeelegant}
+}
+\ExecuteOptionsBeamer{style=blue}
+\ProcessOptionsBeamer
+
+% 使用 elegant 主题的各个组件
+\usecolortheme{elegant}        % 使用 elegant 颜色主题
+\usefonttheme{elegant}         % 使用 elegant 字体主题
+\useinnertheme{elegant}        % 使用 elegant 内部主题
+\useoutertheme{elegant}        % 使用 elegant 外部主题
+
+% 配置导航栏
+\setbeamertemplate{navigation symbols}{}  % 隐藏底部导航栏
+
+% 配置头部导航栏
+\setbeamercolor{section in head/foot}{fg=black, bg=lightgray} % 设置头部导航栏颜色
+\setbeamertemplate{section in head/foot shaded}{% 添加 hover 效果
+    \color{gray!30}\usebeamerfont{section in head/foot}\insertsectionhead\hfill
+}
+\setbeamertemplate{headline}{  % 自定义头部导航栏样式
+    \leavevmode
+    \begin{beamercolorbox}[wd=\paperwidth,ht=3.2ex,dp=1.8ex,center]{section in head/foot}
+        \vbox to 2ex{\vfil\insertsectionnavigationhorizontal{\paperwidth}{\hfill}{\hfill}\vfil}
+    \end{beamercolorbox}
+}
+\setbeamerfont{section in head/foot}{series=\bfseries} % 加粗当前激活的部分
+
+% 设置页面尺寸和边距
+\makeatletter
+    \setlength\beamer@paperwidth{20.00cm} % 设置页面宽度
+    \setlength\beamer@paperheight{13.00cm} % 设置页面高度
+    \geometry{papersize={\beamer@paperwidth,\beamer@paperheight}}
+\makeatother
+\setbeamersize{text margin left=15mm,text margin right=15mm} % 设置文本边距
+
+\mode<all>

@@ -1,0 +1,58 @@
+\mode<presentation>
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% 设置帧标题的边距和样式
+\setbeamertemplate{frametitle}{
+    \vspace{1cm}
+    \usebeamercolor*[fg]{frametitle}\Large\insertframetitle\par\vskip1pt
+    {\usebeamercolor*[fg]{framesubtitle}\small\insertframesubtitle}
+    \vspace*{0.5cm}
+}
+
+
+% 修改小节计数器格式，以包括章节序号
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
+
+% 自动化帧标题
+% 检查每个帧是否有标题，如果没有则自动插入章节或小节作为标题
+\makeatletter
+  \CheckCommand*\beamer@checkframetitle{
+    \@ifnextchar\bgroup\beamer@inlineframetitle{}
+  }
+  \renewcommand*\beamer@checkframetitle{
+    \global\let\beamer@frametitle\relax\@ifnextchar%
+    \bgroup\beamer@inlineframetitle{}
+  }
+\makeatother
+
+\addtobeamertemplate{frametitle}{
+  \ifx\insertframetitle\empty
+    \ifx\insertframesubtitle\empty
+      \ifx\insertsubsection\empty
+        \frametitle{\thesection. \insertsectionhead}
+      \else
+        \frametitle{\thesection. \insertsectionhead}\framesubtitle{\thesubsection. \insertsubsectionhead}
+      \fi
+    \else
+        \frametitle{\thesection. \insertsectionhead} % 如果帧标题为空但指定了副标题，则插入带序号的章节作为帧标题
+    \fi
+  \else
+  \fi
+}{}
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+% 页脚设置, 包含作者、页数、目录按钮
+\setbeamertemplate{footline}{
+    \hspace*{10mm}
+    {\scshape \insertshortauthor \hfill \insertframenumber{} / \inserttotalframenumber \hfill \hyperlink{toc}{\beamergotobutton{目录}}}
+    \hspace*{10mm}
+    \vspace*{0.6cm}
+}
+% 定制目录按钮的颜色
+\setbeamercolor{button}{bg=blue!20,fg=black}
+\setbeamertemplate{button}{\insertbuttontext}
+
+
+\mode<all>

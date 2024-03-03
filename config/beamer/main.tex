@@ -1,0 +1,262 @@
+\documentclass[
+    11pt,
+    notheorems,
+    hyperref={pdfauthor=whatever}
+]{beamer}
+
+% 导入演示文稿的设置
+\input{loadslides.tex}
+
+% 设置文档的标题、副标题和作者信息
+\title{文档标题:xx}
+\subtitle{文档副标题:xx}
+\author{作者:xxx}
+\date{\today}
+
+\begin{document}
+
+% 生成标题页
+\maketitleframe
+% 生成目录页
+\maketocframe
+
+% 介绍部分
+\section{Introduction}
+
+\begin{frame}
+    \begin{itemize}
+        \item 这个模板提供了优雅且简洁的布局。
+        \item 本模板为不满意现有模板的用户设计。
+        \item 目标是提供一个简单但美观的布局，注重内容展示。
+        \item 适用于讲座笔记和技术演示，也适用于任何类型的演讲。
+    \end{itemize}
+\end{frame}
+
+% 颜色部分
+\subsection{Colors}
+\begin{frame}[fragile]
+    \centering
+    模板提供不同的颜色主题。\\
+    在loadslides.tex中设置 \verb+\usetheme[style=lecture]{elegant}+\\[0.8cm]
+    \newcommand{\colorRow}[1]{
+        \begin{tabular}{p{4cm}cccc}
+        #1 & \cellcolor{primary}\hspace*{1cm} &\cellcolor{secondary}\hspace*{1cm}&\cellcolor{tertiary}\hspace*{1cm}\\
+        \end{tabular}
+    }
+    % 示例颜色主题
+    \colorRow{Lecture}\\[0.3cm]
+    \definecolor{primary}{HTML}{08457E}
+    \definecolor{secondary}{HTML}{B8860B}
+    \definecolor{tertiary}{HTML}{B22222}
+    \colorRow{Gold}\\[0.3cm]
+    \definecolor{primary}{HTML}{08457E}
+    \definecolor{secondary}{HTML}{B02A30}
+    \definecolor{tertiary}{HTML}{006400}
+    \colorRow{Red}\\[0.3cm]
+    \definecolor{primary}{HTML}{08457E}
+    \definecolor{secondary}{HTML}{CC5500}
+    \definecolor{tertiary}{HTML}{008B8B}
+    \colorRow{Orange}\\[0.3cm]
+    \definecolor{primary}{HTML}{08457E}
+    \definecolor{secondary}{HTML}{E60073}
+    \definecolor{tertiary}{HTML}{33CCCC}
+    \colorRow{Gray}\\[0.3cm]
+
+    \centering Gray 是默认 \textit{Lecture} 主题的低调版本，使用灰色替代粉色字幕。
+\end{frame}
+
+% Frames 部分
+\subsection{Frames}
+\begin{frame}
+    除非用户自定义帧标题和副标题，否则 Elegant Slides 会自动插入节标题和子节标题作为帧标题和帧副标题。
+\end{frame}
+
+\begin{frame}{}{Custom Subsection}
+    该帧具有自定义副标题。帧标题自动插入，对应于节标题。
+\end{frame}
+
+\begin{frame}{Custom Title}{Custom Subsection with Footnote}
+    该帧具有自定义标题和自定义副标题。\footnote{这是一个脚注。另请参见 \citet{example_2022}。}
+\end{frame}
+
+% Fonts 部分
+\subsection{Fonts}
+\begin{frame}[fragile]
+    \begin{itemize}
+        \item 字体类型可在 loadslides.tex 中更改。
+        \item 对于讲座笔记或报告，\textit{Lecture} 主题结合 \verb+\RequirePackage{palatino}+ 和 \verb+\usefonttheme{serif}+ 效果很好。
+        \item 对于讲座和其他演示，\verb+\RequirePackage[scaled]{helvet}+ 与其他主题（如 \textit{Gold}）搭配更佳。
+        \item 文本突出显示方式如下：
+        \begin{itemize}
+            \item 常规
+            \item \emphasize{强调}:这是一个例子,\textbf{强调}某事，\alert{警示}不要做某事
+            \item \alert{警示}
+            \item \example{示例}
+            \item \textit{斜体}
+            \item \textbf{粗体}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% Lists 部分
+\subsection{Lists}
+\begin{frame}
+    \begin{columns}[T,onlytextwidth]
+        \column{0.33\textwidth}
+            \textbf{项目}
+            \begin{itemize}
+                \item 猫
+                \begin{itemize}
+                    \item 英国短毛猫
+                \end{itemize}
+                \item 狗
+                \item 鸟
+            \end{itemize}
+
+        \column{0.33\textwidth}
+            \textbf{枚举}
+            \begin{enumerate}
+                \item 第一点
+                \begin{enumerate}
+                    \item 第一子点
+                \end{enumerate}
+                \item 第二点
+                \item 最后一点
+            \end{enumerate}
+
+        \column{0.33\textwidth}
+            \textbf{描述}
+            \begin{description}
+                \item[苹果] 是
+                \item[橘子] 否
+                \item[葡萄] 否
+            \end{description}
+    \end{columns}
+\end{frame}
+
+% Table 部分
+\subsection{Table}
+\begin{frame}
+    \begin{table}
+        \caption{世界上最大的城市（来源：维基百科）}
+        \begin{tabular}{@{} lr @{}}
+            \toprule
+            城市 & 人口 \\
+            \midrule
+            墨西哥城 & 20,116,842 \\
+            上海 & 19,210,000 \\
+            北京 & 15,796,450 \\
+            伊斯坦布尔 & 14,160,467 \\
+            \bottomrule
+        \end{tabular}
+        \hspace*{1cm}
+            \setlength\extrarowheight{3pt}
+        \begin{tabular}{|lr|}
+            \hline
+            \rowcolor{primary}\color{white}城市 & \color{white}人口 \\
+            \hline
+            墨西哥城 & 20,116,842 \\
+            上海 & 19,210,000 \\
+            北京 & 15,796,450 \\
+            伊斯坦布尔 & 14,160,467 \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+
+% Figures 部分
+\subsection{Figures}
+\begin{frame}
+    \begin{figure}[htbp]
+        \centering
+        \caption{Plot of $y=x^2$}
+        \begin{tikzpicture}
+            \begin{axis}[
+                legend columns=3,
+                legend style={at={(0.5,-0.3)},anchor=north},
+                width = \textwidth,
+                height = 2.5in,
+                xmin = -3,
+                xmax = 3,
+                ymin = 0,
+                ymax = 10,
+            ]
+                \addplot[primary] {x^2};
+                \addlegendentry{$x^2$}
+            \end{axis}
+        \end{tikzpicture}
+    \end{figure}
+\end{frame}
+
+% Blocks 部分
+\subsection{Blocks}
+\begin{frame}
+    \centering
+    \begin{minipage}[b]{0.5\textwidth}
+        \begin{block}{默认}
+            区块内容。
+        \end{block}
+
+        \begin{alertblock}{警示}
+            区块内容。
+        \end{alertblock}
+
+        \begin{exampleblock}{示例}
+            区块内容。
+        \end{exampleblock}
+    \end{minipage}
+\end{frame}
+
+% Maths 部分
+\section{Maths}
+\subsection{Equations}
+\begin{frame}
+    \begin{itemize}
+        \item 一个编号的方程：
+        \begin{equation}
+            y_t = \beta x_t + \varepsilon_t
+        \end{equation}
+        \item 另一个方程：
+        \begin{equation*}
+            \mathbf{Y} = \boldsymbol{\beta} \mathbf{X} + \boldsymbol{\varepsilon}_t
+        \end{equation*}
+    \end{itemize}
+\end{frame}
+
+% Theorem 部分
+\subsection{Theorem}
+\begin{frame}
+    \begin{itemize}
+        \item 定理按连续编号。
+    \end{itemize}
+    \begin{theorem}[示例定理]
+        对于一个离散随机变量 X，它在字母表 \(\mathcal{X}\) 中取值，并根据 \(p:{\mathcal {X}}\to [0,1]\) 分布：
+        \begin{equation}
+            \mathrm {H} (X):=-\sum _{x\in {\mathcal {X}}}p(x)\log p(x)=\mathbb {E} [-\log p(X)]
+        \end{equation}
+    \end{theorem}
+\end{frame}
+
+% Definition 部分
+\begin{frame}{}{Definitions}
+    \begin{itemize}
+        \item 定义编号前缀为相应部分的节号。
+    \end{itemize}
+    \begin{definition}[示例定义]
+        对于一个离散随机变量 X，它在字母表 \(\mathcal{X}\) 中取值，并根据 \(p:{\mathcal {X}}\to [0,1]\) 分布：
+        \begin{equation}
+            \mathrm {H} (X):=-\sum _{x\in {\mathcal {X}}}p(x)\log p(x)=\mathbb {E} [-\log p(X)]
+        \end{equation}
+    \end{definition}
+\end{frame}
+
+% References 部分
+\begin{frame}[allowframebreaks]{References}
+    \printbibliography
+\end{frame}
+
+% 致谢页
+\thankspage
+
+\end{document}

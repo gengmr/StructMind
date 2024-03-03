@@ -1,0 +1,3 @@
+pyperclip==1.8.2
+streamlit==1.29.0
+streamlit_antd_components==0.2.3

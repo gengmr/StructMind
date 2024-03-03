@@ -1,0 +1,24 @@
+{
+    "IsVisible": true,
+    "Icon": "1-square-fill",
+    "UsageDescription": "程序（算法）整体方案设计【仅测试】",
+    "ChinesePromptTemplate": "我希望你担任算法专家。为给定任务提出所有常用的实现方法和简介（深度学习方法优先），并详细比较速度和效果差异。用中文回复。给定任务如下：\n任务描述：\n{***}\n入参：\n{***}\n出参：\n{***}\n\n",
+    "EnglishPromptTemplate": "I would like you to act as an algorithm expert. For a given task, propose all common implementation methods and a brief introduction (prioritizing deep learning methods), and compare their speed and effectiveness in detail. Please respond in Chinese. The given task is as follows:\nTask Description:\n{***}\nInput Parameters:\n{***}\nOutput Parameters:\n{***}\n\n",
+    "Inputs": [
+        {
+            "InputPlaceholder": "请输入您的任务目标。",
+            "InputLabel": "任务目标",
+            "InputList": null
+        },
+        {
+            "InputPlaceholder": "请输入您的入参描述。",
+            "InputLabel": "入参描述",
+            "InputList": null
+        },
+        {
+            "InputPlaceholder": "请输入您的出参描述。",
+            "InputLabel": "出参描述",
+            "InputList": null
+        }
+    ]
+}
