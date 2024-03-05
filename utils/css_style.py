@@ -198,7 +198,7 @@ def create_download_button(label, data, file_name, mime):
 
 
 def highlight_code(text, language):
-    file_path = 'config/img/logo.svg'
+    file_path = 'config/img/copy.svg'
     with open(file_path, 'r') as file:
         svg_content = file.read()
     # HTML, CSS, and JavaScript for the custom display with syntax highlighting
