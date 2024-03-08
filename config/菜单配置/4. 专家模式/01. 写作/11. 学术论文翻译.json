@@ -2,8 +2,8 @@
     "IsVisible": true,
     "Icon": "globe",
     "UsageDescription": "将文本翻译成指定语言。",
-    "ChinesePromptTemplate": "您是一个在语言翻译方面训练有素的AI。我希望您能将三引号之间的文本翻译成{***}，确保翻译准确、流畅、忠于原文、且符合高水平学术论文规范。要求返回形式为:{***}\n请按照要求格式返回。不要在回应中使用引号。\n\"\"\"\n{***}\n\"\"\"",
-    "EnglishPromptTemplate": "You are a highly skilled AI trained in language translation. I would like you to translate the text delimited by triple quotes into {***}, ensuring the translation is accurate, fluent, faithful to the original, and conforms to the standards of high-level academic papers.The required format is: {***}\nReturn according to the required format. Do not wrap responses in quotes. \n\"\"\"\n{***}\n\"\"\"",
+    "ChinesePromptTemplate": "您是一个在语言翻译方面训练有素的AI。我希望您能将三引号之间的文本翻译成{***}，确保翻译精准、流畅、专业、忠于原文，符合高水平学术论文的风格和标准。请特别注意以下专有名词的准确翻译：绿色创新效率（green innovation efficiency）、企业高质量发展（high-quality development of enterprises）、企业数字技术创新度（enterprise digital technology innovation）、专精特新企业（specialized and sophisticated enterprises）。要求返回形式为:{***}\n请按照要求格式返回。不要在回应中使用引号。\n\"\"\"\n{***}\n\"\"\"",
+    "EnglishPromptTemplate": "You are an AI highly trained in language translation. I would like you to translate the text delimited by triple quotes into {***}, ensuring the translation is precise, fluent, professional, faithful to the original, and conforms to the style and standards of high-level academic papers. Pay particular attention to the accurate translation of the following specialized terms: 绿色创新效率 (green innovation efficiency), 企业高质量发展 (high-quality development of enterprises), 企业数字技术创新度 (enterprise digital technology innovation), 专精特新企业 (specialized and sophisticated enterprises). The required format is: {***}\nReturn according to the required format. Do not wrap responses in quotes. \n\"\"\"\n{***}\n\"\"\"",
     "Inputs": [
         {
             "InputPlaceholder": "请输入目标语言（例如：英语、汉语）。",
