@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import json
+import re
 import pandas as pd
 import streamlit as st
 import streamlit_antd_components as sac
@@ -109,160 +110,73 @@ def get_page_config(menu_dir):
     return page_config
 
 
-def create_config_page():
+def custom_template_page(domain):
     """
-    创建配置文件生成页面
+    创建自定义模版页面
+    :param domain: 领域
     """
-    field = 'config_file'
     # 一. 标题
-    markdown_css(text='配置文件生成', align='center', font_size=35, bold=True)
+    markdown_css(text='自定义模版', align='center', font_size=35, bold=True)
     # 二. 用途说明
-    st.markdown("#### 用途说明：用于生成配置文件")
-    with st.expander(label='字段说明', expanded=False):
-        # 应用设置好的markdown样式
-        st.markdown(markdown_style(), unsafe_allow_html=True)
-        st.markdown("""
-            字段说明
-            <div class="small-font">
-                <div class="level-1"><b>IsVisible</b></div>
-                    <div class="level-2">- 类型: 布尔值</div>
-                    <div class="level-2">- 含义: 指示此功能是否应该对用户可见。</div>
-                <div class="level-1"><b>Icon</b></div>
-                    <div class="level-2">- 类型: 字符串</div>
-                    <div class="level-2">- 含义: 定义图标，可从bootstrap官网中选择。官网链接为:<a href="https://icons.bootcss.com" target="_blank">bootstrap官网</a></div>
-                <div class="level-1"><b>UsageDescription</b></div>
-                    <div class="level-2">- 类型: 字符串</div>
-                    <div class="level-2">- 含义: 描述该功能的用途。</div>
-                <div class="level-1"><b>ChinesePromptTemplate</b></div>
-                    <div class="level-2">- 类型: 字符串</div>
-                    <div class="level-2">- 含义: 中文提示词模版。</div>
-                <div class="level-1"><b>EnglishPromptTemplate</b></div>
-                    <div class="level-2">- 类型: 字符串</div>
-                    <div class="level-2">- 含义: 英文提示词模版。</div>
-                <div class="level-1"><b>Inputs</b></div>
-                    <div class="level-2">- 类型: 对象数组</div>
-                    <div class="level-2">- 含义: 定义了用户输入的字段。每个对象包含以下子字段：</div>
-                        <div class="level-3"><b>InputPlaceholder</b>: 输入框占位文本，提示用户应输入何种信息。</div>
-                            <div class="level-4">- 类型: 字符串</div>
-                            <div class="level-4">- 含义: 输入框占位文本，提示用户应输入何种信息。</div>
-                        <div class="level-3"><b>InputLabel</b>: 输入框标签，说明该输入字段的内容。</div>
-                            <div class="level-4">- 类型: 字符串</div>
-                            <div class="level-4">- 含义: 输入框占位文本，提示用户应输入何种信息。</div>
-            </div>
-            """, unsafe_allow_html=True)
-
-    # 使用 Streamlit 的分割线组件和布局功能来显示配置项的部分
-    sac.divider(label='Config', icon='feather', align='center', bold=True)
-
-    # 三. 配置项
-    # 常规配置
-    col1, col2 = st.columns([1, 10])
-    with col1:
-        sac.tags([sac.Tag(label='常规配置', color='black', bordered=False)], key='tag-0')
-    with col2:
-        df = pd.DataFrame(
-            [
-                {"IsVisible": True, "Icon": "", "UsageDescription": ""},
-            ]
+    st.markdown("#### 用途说明：使用自定义模版进行文本生成")
+    # 模板文本，其中"{***...***}"表示占位符
+    prompt = st.text_area(
+        "示例模版如下，请修改。占位符格式为：{\*\*\*...\*\*\*}",
+        height=500,
+        value=(
+            "作为{***任务领域***}专家，您需要依据您的专业知识及以下输入信息：\n"
+            "- 输入信息1：{***输入信息1***}\n"
+            "- 输入信息2：{***输入信息2***}\n\n"
+            "请完成以下任务：\n"
+            "- 任务1：{***任务1***}，如构建理论模型。\n"
+            "- 任务2：{***任务2***}，如分析模型的实际应用效果。\n\n"
+            "在执行上述任务时，请确保满足以下要求：\n"
+            "- 要求1：{***要求1***}，如确保理论模型的实用性和创新性。\n"
+            "- 要求2：{***要求2***}，如确保模型分析的深度和广度。\n\n"
+            "最终，请严格遵循以下格式返回结果，避免返回无关信息：\n"
+            "- 返回格式：\n"
+            "    - 概述：提供对问题和构建的理论模型的简要概述。\n"
+            "    - 方法论：详细描述构建模型的方法，包括使用的数据、假设和理论依据。\n"
+            "    - 实际应用分析：分析模型在实际应用中的效果，包括模型的适用场景、优势和潜在的局限性。\n"
+            "    - 结论与建议：基于模型的分析结果，提出您的结论和对实践中模型应用的建议。"
         )
-        regular_configs = st.data_editor(df, num_rows="fixed", use_container_width=True)
+    )
 
-    col1, col2 = st.columns([1, 10])
-    with col1:
-        sac.tags([sac.Tag(label='中文模版', color='black', bordered=False)], key='tag-1')
-    with col2:
-        # 定义一个回调函数，当输入文本框文字改变时更新 session_state
-        def on_text_area_change():
-            st.session_state[chinese_key] = st.session_state[chinese_key + "-input"]
+    # 使用正则表达式找出所有的占位符
+    placeholders = re.findall(r"\{\*\*\*(.+?)\*\*\*\}", prompt)
 
-        chinese_key = f"{field}-ChinesePromptTemplate"
-        chinese_template = st.text_area(
-            label="input",  # 提供非空的label值, 避免警告
-            height=200,
-            label_visibility="collapsed",
-            placeholder=prompt_placeholder.replace('{language}', '中文'),
-            key=chinese_key + "-input",  # 使用不同的 key
-            value=st.session_state.get(chinese_key, ""),
-            on_change = on_text_area_change  # 当文本框内容改变时调用函数
-        )
-        # 如果 session_state 中没有存储过当前文本框的值，则存储
-        if chinese_key not in st.session_state:
-            st.session_state[chinese_key] = chinese_template
+    # 为每个占位符生成一个输入框，将用户输入存储在一个列表中
+    user_inputs = []
+    for idx, placeholder in enumerate(placeholders):
+        # 创建列以改善布局
+        col1, col2 = st.columns([1, 10])
 
-    col1, col2 = st.columns([1, 10])
-    with col1:
-        sac.tags([sac.Tag(label='英文模版', color='black', bordered=False)], key='tag-2')
-    with col2:
-        def on_text_area_change():
-            st.session_state[english_key] = st.session_state[english_key + "-input"]
+        with col1:
+            # 使用占位符文本作为标签显示，增强用户体验
+            sac.tags([sac.Tag(label=placeholder, color='black', bordered=False)])
+        with col2:
+            key = f"{domain}-{idx}"  # 格式化key以区分不同的输入框
 
-        english_key = f"{field}-EnglishPromptTemplate"
-        english_template = st.text_area(
-            label="input",  # 提供非空的label值, 避免警告
-            height=200,
-            label_visibility="collapsed",
-            placeholder=prompt_placeholder.replace('{language}', '英文'),
-            key=english_key + "-input",  # 使用不同的 key
-            value=st.session_state.get(english_key, ""),
-            on_change = on_text_area_change  # 当文本框内容改变时调用函数
-        )
-        if english_key not in st.session_state:
-            st.session_state[english_key] = english_template
+            # 定义内容变化时的回调函数
+            def on_text_area_change():
+                st.session_state[key + "-area"] = st.session_state[key + "-input"]
+            # 为每个占位符生成输入区域
+            user_input = st.text_area(
+                label="xxx",  # 非空即可
+                height=200,
+                label_visibility="collapsed",
+                placeholder=f"请输入{placeholder}",
+                value=st.session_state.get(key + "-area", ""),
+                key=key + "-input",
+                on_change=on_text_area_change
+            )
+            user_inputs.append(user_input)
 
-    col1, col2 = st.columns([1, 10])
-    with col1:
-        sac.tags([sac.Tag(label='输入框项', color='black', bordered=False)], key='tag-3')
-    with col2:
-        df = pd.DataFrame(columns=["InputLabel", "InputPlaceholder"])
-        inputs = st.data_editor(df, num_rows="dynamic", use_container_width=True)
-    col1, col2 = st.columns([1, 10])
+    for placeholder, value in zip(placeholders, user_inputs):
+        prompt = re.sub(rf"\{{\*\*\*{placeholder}\*\*\*\}}", value, prompt)
 
-    # 四. 结果显示
-    sac.divider(label='JSON Result', icon='feather', align='center', bold=True)
-    # 将输入框数据转换为符合 JSON 结构的格式
-    inputs_json = [{"InputPlaceholder": row["InputPlaceholder"], "InputLabel": row["InputLabel"]} for index, row in
-                   inputs.iterrows()]
-    # 收集数据以构造 JSON
-    json_data = {
-        "IsVisible": bool(regular_configs.iloc[0]["IsVisible"]),
-        "Icon": regular_configs.iloc[0]["Icon"],
-        "UsageDescription": regular_configs.iloc[0]["UsageDescription"],
-        "ChinesePromptTemplate": chinese_template,
-        "EnglishPromptTemplate": english_template,
-        "Inputs": inputs_json
-    }
-    # 将数据转换为 JSON 格式的字符串
-    json_data = json.dumps(json_data, indent=2, ensure_ascii=False)
-    # 显示json和下载按钮
-    col1, col2 = st.columns([1, 10])
-    with col1:
-        # 创建下载按钮
-        create_download_button(
-            label="下载",
-            data=json_data,
-            file_name="config.json",
-            mime="application/json"
-        )
-    with col2:
-        # 显示json
-        st.code(json_data)
-
-    # 计算中文、英文占位符数量是否与输入项一致，如果不一致显示报错
-    # 计算占位符的数量
-    placeholders_chinese = chinese_template.count("{***}")
-    placeholders_english = english_template.count("{***}")
-    # 计算 inputs 中的字典个数
-    num_inputs = len(inputs)
-    # 检查数量是否匹配
-    match_chinese = placeholders_chinese == num_inputs
-    match_english = placeholders_english == num_inputs
-    # 显示结果
-    if not match_chinese or not match_english:
-        st.error(
-            f"占位符数量不匹配。中文模板占位符数: {placeholders_chinese}, 英文模板占位符数: {placeholders_english}, 输入项数: {num_inputs}。请确保占位符数量与输入项数一致。")
-    else:
-        st.success(
-            f"占位符数量匹配。中文模板占位符数: {placeholders_chinese}, 英文模板占位符数: {placeholders_english}, 输入项数: {num_inputs}。")
+    # 使用自定义代码高亮组件显示
+    highlight_code(prompt, language='python')
 
 
 def create_home_page():

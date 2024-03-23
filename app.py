@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from utils.init import set_page_style
 from config.config import PAGE_TITLE, LAYOUT, ICON_DIR, MENU_DIR, PADDING_TOP
-from utils.page import get_page_config, create_page, create_home_page, create_config_page, create_ppt
+from utils.page import get_page_config, create_page, create_home_page, custom_template_page, create_ppt
 from utils.css_style import apple_style, sidebar_style
 
 
@@ -40,8 +40,8 @@ def generate_selected_page(selected_page, page_config):
     """
     if selected_page == '主页':
         create_home_page()
-    elif selected_page == '配置文件生成':
-        create_config_page()
+    elif selected_page == '自定义模版':
+        custom_template_page(domain=selected_page)
     elif selected_page == '幻灯片制作':
         create_ppt(page_config=page_config[selected_page], domain=selected_page)
     elif selected_page in page_config:
