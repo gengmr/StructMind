@@ -119,31 +119,30 @@ def custom_template_page(domain):
     markdown_css(text='自定义模版', align='center', font_size=35, bold=True)
     # 二. 用途说明
     st.markdown("#### 用途说明：使用自定义模版进行文本生成")
-    # 模板文本，其中"{***...***}"表示占位符
+    # 模板文本，其中"{{...}}"表示占位符
+
+    def custom_text_area_change():
+        st.session_state[domain + "-area"] = st.session_state[domain + "-input"]
+
     prompt = st.text_area(
-        "示例模版如下，请修改。占位符格式为：{\*\*\*...\*\*\*}",
+        "示例模版如下，请根据需求修改。占位符格式为：{{...}}",
         height=500,
-        value=(
-            "作为{***任务领域***}专家，您需要依据您的专业知识及以下输入信息：\n"
-            "- 输入信息1：{***输入信息1***}\n"
-            "- 输入信息2：{***输入信息2***}\n\n"
-            "请完成以下任务：\n"
-            "- 任务1：{***任务1***}，如构建理论模型。\n"
-            "- 任务2：{***任务2***}，如分析模型的实际应用效果。\n\n"
-            "在执行上述任务时，请确保满足以下要求：\n"
-            "- 要求1：{***要求1***}，如确保理论模型的实用性和创新性。\n"
-            "- 要求2：{***要求2***}，如确保模型分析的深度和广度。\n\n"
-            "最终，请严格遵循以下格式返回结果，避免返回无关信息：\n"
-            "- 返回格式：如\n"
-            "    - 概述：提供对问题和构建的理论模型的简要概述。\n"
-            "    - 方法论：详细描述构建模型的方法，包括使用的数据、假设和理论依据。\n"
-            "    - 实际应用分析：分析模型在实际应用中的效果，包括模型的适用场景、优势和潜在的局限性。\n"
-            "    - 结论与建议：基于模型的分析结果，提出您的结论和对实践中模型应用的建议。"
-        )
+        value=st.session_state.get(domain + "-area",
+                                   "作为xx领域专家，请根据提供的【输入信息】，按照【执行原则】完成xx任务，"
+                                   "并严格按照【返回格式】返回结果。确保结果的专业性、规范性、逻辑性，同时遵循行业的标准与最佳实践。\n\n"
+                                   "【输入信息】\n"
+                                   "{{输入信息}}\n\n"
+                                   "【执行原则】\n"
+                                   "{{执行原则}}\n\n"
+                                   "【返回格式】\n"
+                                   "{{返回格式}}"
+                                   ),
+        key=domain + "-input",  # 使用不同的 key
+        on_change=custom_text_area_change  # 当文本框内容改变时调用函数
     )
 
     # 使用正则表达式找出所有的占位符
-    placeholders = re.findall(r"\{\*\*\*(.+?)\*\*\*\}", prompt)
+    placeholders = re.findall(r"\{\{(.+?)\}\}", prompt)
 
     # 为每个占位符生成一个输入框，将用户输入存储在一个列表中
     user_inputs = []
@@ -173,7 +172,7 @@ def custom_template_page(domain):
             user_inputs.append(user_input)
 
     for placeholder, value in zip(placeholders, user_inputs):
-        prompt = re.sub(rf"\{{\*\*\*{placeholder}\*\*\*\}}", value, prompt)
+        prompt = re.sub(rf"\{{\{{({placeholder})\}}\}}", value, prompt)
 
     # 使用自定义代码高亮组件显示
     highlight_code(prompt, language='python')
