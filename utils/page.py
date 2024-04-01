@@ -2,12 +2,13 @@
 import os
 import json
 import re
-import pandas as pd
 import streamlit as st
 import streamlit_antd_components as sac
-from utils.css_style import markdown_css, markdown_style, create_download_button, highlight_code
+from utils.css_style import markdown_css, markdown_style, create_download_button, create_download_folder_button, highlight_code
 from utils.menu import remove_numerical_prefix
 from utils.latex import json_to_latex_beamer
+from utils.utils import parse_mindmap
+import streamlit.components.v1 as components
 from config.config import prompt_placeholder, PAGE_TITLE, AUTHOR, INSTITUTE
 
 
@@ -240,10 +241,10 @@ def create_page(page_config: dict, domain: str):
 
 def create_ppt(page_config, domain):
     # json格式是否正确, json数据
-    if 'json_flag' not in st.session_state:
-        st.session_state['json_flag'] = False
-    if 'json_data' not in st.session_state:
-        st.session_state['json_data'] = ""
+    if 'ppt_json_flag' not in st.session_state:
+        st.session_state['ppt_json_flag'] = False
+    if 'ppt_json_data' not in st.session_state:
+        st.session_state['ppt_json_data'] = ""
 
     tab = sac.steps(
         items=[
@@ -262,7 +263,7 @@ def create_ppt(page_config, domain):
         col1, col2 = st.columns([1, 10])
 
         with col1:
-            sac.tags([sac.Tag(label="格式数据", color='black', bordered=False)])
+            sac.tags([sac.Tag(label="json数据", color='black', bordered=False)])
         with col2:
             key = f"{domain}-json_input"
             # 定义文本区域内容变化时的回调函数
@@ -282,30 +283,117 @@ def create_ppt(page_config, domain):
 
             try:
                 # 尝试解析输入数据为JSON
-                st.session_state['json_data'] = json.loads(input_data)
+                st.session_state['ppt_json_data'] = json.loads(input_data)
 
                 # 检查解析结果是否为字典或列表
-                if isinstance(st.session_state['json_data'], (dict, list)):
+                if isinstance(st.session_state['ppt_json_data'], (dict, list)):
                     # 如果是字典或列表，显示成功信息和JSON数据
-                    st.session_state['json_flag'] = True
+                    st.session_state['ppt_json_flag'] = True
                     st.success("数据符合JSON格式要求!")
                     st.markdown("### JSON数据如下:")
-                    st.json(st.session_state['json_data'])
+                    st.json(st.session_state['ppt_json_data'])
                 else:
                     # 如果解析结果不是字典或列表，则不是有效的JSON
-                    st.session_state['json_flag'] = False
+                    st.session_state['ppt_json_flag'] = False
                     st.error("数据不是有效的JSON格式!")
 
             except json.JSONDecodeError:
-                st.session_state['json_flag'] = False
+                st.session_state['ppt_json_flag'] = False
                 # 如果解析过程中出现异常，表示数据不是JSON格式
                 st.error("数据不是有效的JSON格式!")
 
     elif tab == 'step 4':
-        if not st.session_state['json_flag']:
+        st.markdown('上传至`overleaf`编译，其中`main.tex`内容如文本框中所示，完整文件夹可以通过download zip按钮下载（文件较大，可能需要一小段时间显示下载按钮，请耐心等待）')
+        if not st.session_state['ppt_json_flag']:
             st.error("请在步骤3中输入PPT的JSON数据!")
         else:
-            highlight_code(json_to_latex_beamer(json_data=st.session_state['json_data'], author=AUTHOR, institute=INSTITUTE), language='python')
+            highlight_code(json_to_latex_beamer(json_data=st.session_state['ppt_json_data'], author=AUTHOR, institute=INSTITUTE), language='python')
+            create_download_folder_button()
+
+
+def create_mindmap(page_config, domain):
+    # json格式是否正确, json数据
+    if 'mindmap_json_flag' not in st.session_state:
+        st.session_state['mindmap_json_flag'] = False
+    if 'mindmap_json_data' not in st.session_state:
+        st.session_state['mindmap_json_data'] = ""
+
+    tab = sac.steps(
+        items=[
+            sac.StepsItem(title='step 1', description='确定思维导图主题及子主题'),
+            sac.StepsItem(title='step 2', description='生成json'),
+            sac.StepsItem(title='step 3', description='json格式检查'),
+            sac.StepsItem(title='step 4', description='生成思维导图'),
+        ], format_func='title'
+    )
+
+    if tab == 'step 1':
+        st.markdown('### 请利用`分析模式`的`需求澄清`和`框架搭建`功能明确`思维导图的主题和子主题`\n步骤如下：\n1. 利用`分析模式`的`需求澄清`的`任务目标`'
+                    '中填写`制作关于[此处填写思维导图主题]`的思维导图，得到`需求文档`\n2. 利用`分析模式`的`框架搭建`功能列出`思维导图主题及子主题`')
+    elif tab == 'step 2':
+        create_page(page_config=page_config, domain=domain)
+    elif tab == 'step 3':
+        col1, col2 = st.columns([1, 10])
+
+        with col1:
+            sac.tags([sac.Tag(label="json数据", color='black', bordered=False)])
+        with col2:
+            key = f"{domain}-json_input"
+            # 定义文本区域内容变化时的回调函数
+
+            def on_text_area_change():
+                st.session_state[key + "-area"] = st.session_state[key + "-input"]
+
+            input_data = st.text_area(
+                label="input",  # 提供非空的label值, 避免警告
+                height=200,
+                label_visibility="collapsed",
+                placeholder="请输入思维导图的JSON数据",
+                key=key + "-input",  # 使用不同的 key
+                value=st.session_state.get(key + "-area", ""),
+                on_change=on_text_area_change  # 当文本框内容改变时调用函数
+            )
+
+            try:
+                # 尝试解析输入数据为JSON
+                st.session_state['mindmap_json_data'] = json.loads(input_data)
+
+                # 检查解析结果是否为字典或列表
+                if isinstance(st.session_state['mindmap_json_data'], (dict, list)):
+                    # 如果是字典或列表，显示成功信息和JSON数据
+                    st.session_state['mindmap_json_flag'] = True
+                    st.success("数据符合JSON格式要求!")
+                    st.markdown("### JSON数据如下:")
+                    st.json(st.session_state['mindmap_json_data'])
+                else:
+                    # 如果解析结果不是字典或列表，则不是有效的JSON
+                    st.session_state['mindmap_json_flag'] = False
+                    st.error("数据不是有效的JSON格式!")
+
+            except json.JSONDecodeError:
+                st.session_state['mindmap_json_flag'] = False
+                # 如果解析过程中出现异常，表示数据不是JSON格式
+                st.error("数据不是有效的JSON格式!")
+
+    elif tab == 'step 4':
+        if not st.session_state['mindmap_json_flag']:
+            st.error("请在步骤3中输入思维导图的JSON数据!")
+        else:
+            # 使用 parse_mindmap 函数处理json增加label字段，使其支持思维导图格式
+            processed_mindmap_data = parse_mindmap(data=st.session_state['mindmap_json_data'])
+            # 将处理后的数据转换为 JSON 格式字符串
+            json_mindmap_data = json.dumps(processed_mindmap_data)
+            # 读取存放思维导图 HTML 模板的文件
+            with open("config/mindmap/mindmap.html", encoding="utf-8") as file:
+                html_content = file.read()
+                # 替换 HTML 中的占位符为实际的思维导图数据
+                html_content = html_content.replace("const rawData = {}", f"const rawData = {json_mindmap_data}")
+                # 替换下载文件名为思维导图中心主题
+                html_content = html_content.replace("filename", f"{processed_mindmap_data['label']}")
+
+            # 使用 Streamlit 的 components 功能，将 HTML 内容嵌入到页面中
+            # 设置合适的高度和宽度，并允许滚动
+            components.html(html_content, height=1000, width=1800, scrolling=True)
 
 
 

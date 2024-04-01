@@ -1,0 +1,19 @@
+{
+    "IsVisible": true,
+    "Icon": "diagram-3",
+    "UsageDescription": "生成包含对应主题思维导图的JSON。",
+    "ChinesePromptTemplate": "## 任务描述\n\n作为思维导图制作专家，您的任务是根据要求概述，遵循思维导图设计规范，生成包含对应主题思维导图的JSON，确保返回结果严格遵循JSON文件格式，不可包含//注释内容。\n\n## 要求概述\n\n- 思维导图主题及子主题\n\n{***}\n\n- 详细要求：\n\n{***}\n\n## 思维导图设计规范\n- 确保结构及内容专业、规范、全面，结构清晰、逻辑性强\n- 使用标准的JSON字典格式返回，所有节点应包含label字段，若节点包含子节点，则还应包含children字段\n\n## 思维导图JSON规范\n- 根节点应包含label字段表示思维导图的主题\n- 若节点下有子节点，则该节点除了label字段外，还应包含一个children数组，每个子节点也遵循相同的格式\n- 子节点同样可以包含自己的子节点，形成多层级的结构\n\n### 示例结果\n```json\n{\n  \"label\": \"思维导图主题\",\n  \"children\": [\n    {\n      \"label\": \"子主题1\",\n      \"children\": [\n        {\n          \"label\": \"子主题1-1\"\n        },\n        {\n          \"label\": \"子主题1-2\"\n        }\n      ]\n    },\n    {\n      \"label\": \"子主题2\",\n      \"children\": [\n        {\n          \"label\": \"子主题2-1\"\n        }\n      ]\n    }\n  ]\n}\n```",
+    "EnglishPromptTemplate": "## Task Description\n\nAs an expert in mind map creation, your task is to outline according to the requirements, follow the mind map design standards, and generate a JSON containing the corresponding theme mind map. Ensure the returned results strictly adhere to the JSON file format, without containing // comments.\n\n## Requirements Overview\n\n- Mind map theme and sub-themes\n\n{***}\n\n- Detailed requirements:\n\n{***}\n\n## Mind Map Design Standards\n- Ensure the structure and content are professional, standard, comprehensive, with clear structure and strong logic\n- Use standard JSON dictionary format for return, all nodes should contain a label field, if a node contains children, it should also include a children field\n\n## Mind Map JSON Standards\n- The root node should include a label field to represent the theme of the mind map\n- If a node has children, besides the label field, it should also include a children array, each child node follows the same format\n- Child nodes can also contain their own children, forming a multi-level structure\n\n### Example Result\n```json\n{\n  \"label\": \"Mind Map Theme\",\n  \"children\": [\n    {\n      \"label\": \"Sub-theme 1\",\n      \"children\": [\n        {\n          \"label\": \"Sub-theme 1-1\"\n        },\n        {\n          \"label\": \"Sub-theme 1-2\"\n        }\n      ]\n    },\n    {\n      \"label\": \"Sub-theme 2\",\n      \"children\": [\n        {\n          \"label\": \"Sub-theme 2-1\"\n        }\n      ]\n    }\n  ]\n}\n```",
+    "Inputs": [
+        {
+            "InputPlaceholder": "请输入您的思维导图主题及子主题（可利用分析模式的需求澄清、框架搭建完成）",
+            "InputLabel": "主题子主题",
+            "InputList": null
+        },
+        {
+            "InputPlaceholder": "请输入您的生成思维导图详细要求",
+            "InputLabel": "详细要求",
+            "InputList": null
+        }
+    ]
+}

@@ -50,7 +50,7 @@ def print_json_contents(file_path):
 
 if __name__ == '__main__':
     # 指定你的JSON文件路径
-    json_file_path = 'config/菜单配置/6. 探索模式/1. 编程【仅测试】/01. 思路分析【仅测试】.json'
+    json_file_path = 'config/菜单配置/8. 探索模式/1. 编程【仅测试】/01. 思路分析【仅测试】.json'
     # # 调用函数
     # print_json_contents(json_file_path)
 

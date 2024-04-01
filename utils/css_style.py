@@ -2,8 +2,9 @@ import streamlit as st
 import streamlit.components.v1 as components
 import json
 import base64
-import shutil
-from pathlib import Path
+import zipfile
+import io
+import os
 
 
 def apple_style():
@@ -194,6 +195,64 @@ def create_download_button(label, data, file_name, mime):
 
     # 将样式和下载链接添加到Streamlit应用中
     st.markdown(apple_style, unsafe_allow_html=True)
+    st.markdown(download_link, unsafe_allow_html=True)
+
+
+def create_download_folder_button(folder_path='config/beamer'):
+    """
+    将指定文件夹压缩并在Streamlit中提供下载按钮。
+
+    :param folder_path: 要下载的文件夹路径，默认为'config/beamer'。
+    """
+    # 内部函数：遍历并添加文件夹到压缩包
+    def zipdir(path, ziph):
+        # ziph是zip文件句柄
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                # 创建相对路径以保留文件夹结构
+                relative_path = os.path.relpath(os.path.join(root, file), os.path.join(path, '..'))
+                ziph.write(os.path.join(root, file), arcname=relative_path)
+
+    # 创建内存中的文件
+    zip_buffer = io.BytesIO()
+
+    # 创建压缩包并添加文件
+    with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zipf:
+        zipdir(folder_path, zipf)
+
+    # 重置缓冲区的位置到开始处，以便于读取内容
+    zip_buffer.seek(0)
+
+    # 设置按钮样式
+    apple_style = """
+        <style>
+        .apple-style-button {
+            background-color: #FFFFFF;  /* 白色背景 */
+            color: #007AFF;  /* 蓝色字体，符合苹果设计 */
+            border-radius: 15px;
+            border: none;
+            font-family: 'Helvetica Neue', sans-serif;  /* 使用苹果系统字体 */
+            font-size: 16px;
+            padding: 5px 15px;  /* 按钮的高度和宽度 */
+            margin: 10px 0;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s, box-shadow 0.3s;
+            text-align: center;
+            text-decoration: none;  /* 移除下划线 */
+            display: inline-block;
+            cursor: pointer;
+        }
+        .apple-style-button:hover {
+            background-color: #F0F0F0;  /* 悬停时略微变暗 */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            text-decoration: none;  /* 悬停时也移除下划线 */
+        }
+        </style>
+    """
+    st.markdown(apple_style, unsafe_allow_html=True)
+
+    # 生成下载链接并使用HTML按钮样式
+    download_link = f'<a href="data:file/zip;base64,{base64.b64encode(zip_buffer.getvalue()).decode()}" download="{os.path.basename(folder_path)}.zip" class="apple-style-button">Download ZIP</a>'
     st.markdown(download_link, unsafe_allow_html=True)
 
 
