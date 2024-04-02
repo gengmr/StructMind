@@ -13,11 +13,14 @@ def apple_style():
     style = """
         <style>
         /* Base styles for text area and code block */
+        textarea {
+        font-family: 'Georgia', serif !important;
+    }
         .stTextArea [data-baseweb=textarea], .stTextArea [data-baseweb=base-input] {
             background-color: #f1f3f4;
             border: none !important;
             padding: 10px 15px;
-            font-family: 'Helvetica Neue', sans-serif;
+            font-family: 'Georgia', sans-serif;
             font-size: 16px;
             outline: none !important;
         }
@@ -27,11 +30,10 @@ def apple_style():
             border-radius: 10px;  /* Rounded corners */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        
         .stCodeBlock* {
             background-color: #f1f3f4;
             padding: 10px 15px;
-            font-family: 'Helvetica Neue', sans-serif;
+            font-family: 'Georgia', sans-serif !important;
             font-size: 16px;
         }
 
